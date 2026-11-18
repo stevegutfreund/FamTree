@@ -1,0 +1,2061 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>אילן יוחסין</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&family=Frank+Ruhl+Libre:wght@500;700&display=swap" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #f3f2ee;
+    --surface: #ffffff;
+    --surface-2: #f8f7f4;
+    --surface-3: #efede7;
+    --ink: #1b1a17;
+    --ink-2: #47443d;
+    --muted: #7a766c;
+    --line: #e3e0d8;
+    --line-strong: #cfcbc0;
+    --wire: #b9b4a7;
+    --accent: #3f3cbb;
+    --accent-soft: #ecebfb;
+    --accent-ink: #2e2b99;
+    --gold: #b8892b;
+    --male: #2f6db5;
+    --male-soft: #e5eef9;
+    --female: #b5476f;
+    --female-soft: #f9e6ed;
+    --unknown: #7a766c;
+    --unknown-soft: #efede7;
+    --dot: radial-gradient(circle, rgba(27,26,23,.09) 1px, transparent 1.2px);
+    --shadow-sm: 0 1px 2px rgba(27, 26, 23, .06);
+    --shadow: 0 1px 2px rgba(27, 26, 23, .05), 0 4px 14px rgba(27, 26, 23, .06);
+    --shadow-lg: 0 10px 40px rgba(27, 26, 23, .18);
+    --r: 12px;
+    --r-sm: 8px;
+    --font: 'Heebo', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+    --serif: 'Frank Ruhl Libre', 'Times New Roman', serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+      --bg: #121214;
+      --surface: #1b1b1f;
+      --surface-2: #202025;
+      --surface-3: #2a2a30;
+      --ink: #ecebe6;
+      --ink-2: #c5c3bc;
+      --muted: #8f8c84;
+      --line: #2e2e35;
+      --line-strong: #3d3d45;
+      --wire: #55555f;
+      --accent: #8d8bf2;
+      --accent-soft: #26254a;
+      --accent-ink: #c4c3ff;
+      --gold: #d8ad55;
+      --male: #78aef0;
+      --male-soft: #1c2a3d;
+      --female: #ec8db0;
+      --female-soft: #3a1f2b;
+      --unknown: #8f8c84;
+      --unknown-soft: #2a2a30;
+      --dot: radial-gradient(circle, rgba(255,255,255,.07) 1px, transparent 1.2px);
+      --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 4px 14px rgba(0,0,0,.3);
+      --shadow-lg: 0 10px 40px rgba(0,0,0,.55);
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: var(--font); background: var(--bg); color: var(--ink);
+    font-size: 14px; line-height: 1.5;
+    display: flex; flex-direction: column; height: 100dvh; overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  button { cursor: pointer; background: none; border: 0; }
+  .num { font-variant-numeric: tabular-nums; }
+  .ltr { direction: ltr; unicode-bidi: isolate; }
+  [hidden] { display: none !important; }
+
+  /* ---------- App bar ---------- */
+  .appbar {
+    flex: none; display: flex; align-items: center; gap: 14px;
+    padding: 10px 20px; background: var(--surface); border-bottom: 1px solid var(--line);
+    position: relative; z-index: 20;
+  }
+  .brand { display: flex; align-items: center; gap: 11px; min-width: 0; }
+  .brand-mark {
+    width: 36px; height: 36px; border-radius: 10px; flex: none; display: grid; place-items: center;
+    background: linear-gradient(145deg, #2f7a5f, #1f5a7a); color: #fff; font-size: 16px;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.15);
+  }
+  .brand h1 { font-family: var(--serif); font-size: 20px; font-weight: 700; line-height: 1.1; letter-spacing: -.01em; white-space: nowrap; }
+  .brand p { color: var(--muted); font-size: 12px; white-space: nowrap; }
+
+  .search { position: relative; flex: 1; max-width: 460px; margin-inline: auto; }
+  .search > i { position: absolute; inset-inline-start: 13px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 13px; pointer-events: none; }
+  .search input {
+    width: 100%; height: 38px; border-radius: 10px; border: 1px solid var(--line);
+    background: var(--surface-2); padding-inline: 36px 44px; outline: none;
+    transition: border-color .15s, background .15s, box-shadow .15s;
+  }
+  .search input:focus { background: var(--surface); border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .search kbd {
+    position: absolute; inset-inline-end: 10px; top: 50%; transform: translateY(-50%);
+    font: 500 11px var(--font); color: var(--muted); border: 1px solid var(--line-strong);
+    border-radius: 5px; padding: 0 6px; background: var(--surface);
+  }
+  .results {
+    position: absolute; top: calc(100% + 6px); inset-inline: 0; background: var(--surface);
+    border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow-lg);
+    padding: 6px; max-height: 60vh; overflow: auto; z-index: 40;
+  }
+  .res {
+    display: flex; align-items: center; gap: 11px; padding: 8px 10px; border-radius: 9px; cursor: pointer; width: 100%; text-align: start;
+  }
+  .res:hover, .res.on { background: var(--surface-3); }
+  .res .nm { font-weight: 600; }
+  .res .mt { color: var(--muted); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .res .yr { margin-inline-start: auto; color: var(--muted); font-size: 12px; }
+  .res-empty { padding: 18px; text-align: center; color: var(--muted); }
+
+  .seg { display: inline-flex; padding: 3px; gap: 2px; background: var(--surface-3); border-radius: 10px; flex: none; }
+  .seg button {
+    padding: 6px 13px; border-radius: 7px; font-weight: 500; font-size: 13px; color: var(--ink-2);
+    display: inline-flex; align-items: center; gap: 7px; transition: background .15s, color .15s;
+  }
+  .seg button:hover { color: var(--ink); }
+  .seg button.active { background: var(--surface); color: var(--ink); box-shadow: var(--shadow-sm); }
+  .seg button i { font-size: 12px; opacity: .8; }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+    height: 36px; padding: 0 14px; border-radius: 9px; font-weight: 500; font-size: 13px; white-space: nowrap;
+    border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+    transition: background .15s, border-color .15s, box-shadow .15s;
+  }
+  .btn:hover { background: var(--surface-2); border-color: var(--line-strong); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn.primary:hover { filter: brightness(1.08); }
+  .btn.ghost { border-color: transparent; background: transparent; }
+  .btn.ghost:hover { background: var(--surface-3); }
+  .btn.sm { height: 30px; padding: 0 10px; font-size: 12.5px; border-radius: 8px; }
+  .btn.icon { width: 36px; padding: 0; }
+  .btn.sm.icon { width: 30px; }
+  .btn:disabled { opacity: .45; cursor: default; }
+
+  /* ---------- Main ---------- */
+  main { flex: 1; min-height: 0; display: flex; position: relative; }
+  .view { flex: 1; min-width: 0; display: flex; }
+
+  /* ---------- Tree canvas ---------- */
+  .stage {
+    flex: 1; min-width: 0; position: relative; overflow: hidden; touch-action: none; cursor: grab;
+    background-color: var(--bg); background-image: var(--dot); background-size: 22px 22px;
+  }
+  .stage.dragging { cursor: grabbing; }
+  .world { position: absolute; top: 0; left: 0; transform-origin: 0 0; will-change: transform; }
+  .wires { position: absolute; top: 0; left: 0; overflow: visible; pointer-events: none; }
+  .wires path { fill: none; stroke: var(--wire); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .wires path.hot { stroke: var(--accent); stroke-width: 2; opacity: .75; }
+  .wires circle { fill: var(--surface); stroke: var(--wire); stroke-width: 1.6; }
+  .wires circle.hot { stroke: var(--accent); }
+  .wires.fade { animation: fadeIn .45s .2s both; }
+  @keyframes fadeIn { from { opacity: 0; } }
+
+  .rowlabel {
+    position: absolute; transform: translateY(-50%); font-size: 11px; font-weight: 600; letter-spacing: .04em;
+    color: var(--muted); white-space: nowrap; text-transform: uppercase; pointer-events: none;
+    padding: 3px 9px; border-radius: 99px; background: var(--surface-3); transition: top .5s, left .5s;
+  }
+
+  .nd {
+    position: absolute; top: 0; left: 0; width: 188px; height: 64px;
+    display: flex; align-items: center; gap: 10px; padding: 0 12px 0 10px;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow); cursor: pointer; user-select: none;
+    transition: transform .5s cubic-bezier(.2,.7,.2,1), opacity .3s, box-shadow .15s, border-color .15s;
+  }
+  .nd::before {
+    content: ""; position: absolute; inset-block: 10px; inset-inline-start: -1px; width: 3px; border-radius: 3px;
+    background: var(--g);
+  }
+  .nd:hover { border-color: var(--line-strong); box-shadow: var(--shadow-lg); }
+  .nd.enter { opacity: 0; }
+  .nd.out { opacity: 0; pointer-events: none; }
+  .nd.focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft), var(--shadow-lg); }
+  .nd.dim { opacity: .82; }
+  .nd.ctx { opacity: .45; box-shadow: var(--shadow-sm); }
+  .nd.ctx:hover { opacity: 1; }
+  .nd .tx { min-width: 0; flex: 1; }
+  .nd .nm { font-weight: 600; font-size: 13.5px; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nd .mt { color: var(--muted); font-size: 11.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nd .more {
+    position: absolute; inset-inline-start: 50%; transform: translateX(50%);
+    font-size: 10.5px; font-weight: 600; color: var(--muted); background: var(--surface);
+    border: 1px solid var(--line); border-radius: 99px; padding: 0 7px; line-height: 17px; white-space: nowrap;
+  }
+  .nd .more.dn { bottom: -10px; }
+  .nd .more.up { top: -10px; }
+  .g-m { --g: var(--male); --gs: var(--male-soft); }
+  .g-f { --g: var(--female); --gs: var(--female-soft); }
+  .g-u { --g: var(--unknown); --gs: var(--unknown-soft); }
+
+  .av {
+    flex: none; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--gs); color: var(--g); font-weight: 700; font-size: 13px; letter-spacing: -.02em;
+  }
+  .av.sm { width: 30px; height: 30px; font-size: 11.5px; }
+  .av.lg { width: 64px; height: 64px; font-size: 22px; font-family: var(--serif); }
+
+  /* floating controls */
+  .tools {
+    position: absolute; top: 14px; inset-inline-start: 14px; z-index: 5;
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center; pointer-events: none;
+  }
+  .tools > * { pointer-events: auto; }
+  .card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 11px; box-shadow: var(--shadow);
+    display: inline-flex; align-items: center; gap: 2px; padding: 3px;
+  }
+  .stepper .lbl { font-size: 12px; color: var(--ink-2); padding-inline: 8px 4px; display: inline-flex; gap: 6px; align-items: center; white-space: nowrap; }
+  .stepper .lbl i { color: var(--muted); font-size: 11px; }
+  .stepper b { min-width: 18px; text-align: center; font-size: 13px; }
+  .tbtn { width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; color: var(--ink-2); font-size: 12px; }
+  .tbtn:hover:not(:disabled) { background: var(--surface-3); color: var(--ink); }
+  .tbtn:disabled { opacity: .35; cursor: default; }
+  .tbtn.on { background: var(--accent-soft); color: var(--accent-ink); }
+  .zoomval { font-size: 12px; min-width: 42px; text-align: center; color: var(--ink-2); }
+  .sep { width: 1px; height: 18px; background: var(--line); margin-inline: 3px; }
+
+  .trail {
+    position: absolute; bottom: 14px; inset-inline-start: 14px; inset-inline-end: 14px; z-index: 5;
+    display: flex; gap: 6px; align-items: center; pointer-events: none; overflow: hidden;
+  }
+  .trail > * { pointer-events: auto; }
+  .trail .t-l { font-size: 11px; color: var(--muted); font-weight: 600; margin-inline-end: 2px; white-space: nowrap; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px 3px 4px; border-radius: 99px;
+    background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow-sm);
+    font-size: 12px; font-weight: 500; white-space: nowrap; flex: none;
+  }
+  .chip:hover { border-color: var(--line-strong); }
+  .chip .av { width: 22px; height: 22px; font-size: 9.5px; }
+  .hint { position: absolute; bottom: 14px; inset-inline-end: 14px; font-size: 11px; color: var(--muted); z-index: 4; pointer-events: none; }
+  .hint kbd { font: inherit; border: 1px solid var(--line-strong); border-radius: 4px; padding: 0 4px; background: var(--surface); }
+
+  /* ---------- Profile panel ---------- */
+  .panel {
+    flex: none; width: 380px; background: var(--surface); border-inline-start: 1px solid var(--line);
+    display: flex; flex-direction: column; min-height: 0; position: relative; z-index: 6;
+  }
+  .p-scroll { overflow: auto; flex: 1; min-height: 0; }
+  .p-head { padding: 24px 24px 18px; display: flex; gap: 16px; align-items: flex-start; border-bottom: 1px solid var(--line); }
+  .p-head .who { min-width: 0; flex: 1; }
+  .p-name { font-family: var(--serif); font-size: 24px; font-weight: 700; line-height: 1.2; letter-spacing: -.01em; }
+  .p-en { color: var(--muted); font-size: 13px; margin-top: 2px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .tag { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 500; padding: 2px 9px; border-radius: 99px; background: var(--surface-3); color: var(--ink-2); }
+  .tag.g { background: var(--gs); color: var(--g); }
+  .tag.live { background: #e2f3ef; color: #13846f; }
+  @media (prefers-color-scheme: dark) { .tag.live { background: #15302b; color: #3cc4a6; } }
+  .p-actions { display: flex; gap: 8px; padding: 14px 24px; border-bottom: 1px solid var(--line); position: relative; }
+  .p-actions .btn { flex: 1; }
+  .sec { padding: 18px 24px; border-bottom: 1px solid var(--line); }
+  .sec:last-child { border-bottom: 0; }
+  .sec h3 { font-size: 11px; font-weight: 600; letter-spacing: .06em; color: var(--muted); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .sec h3 .cnt { background: var(--surface-3); border-radius: 99px; padding: 0 7px; font-size: 10.5px; color: var(--ink-2); }
+  .facts { display: grid; grid-template-columns: auto 1fr; gap: 7px 16px; font-size: 13px; }
+  .facts dt { color: var(--muted); }
+  .facts dd { color: var(--ink); font-weight: 500; }
+  .notes { font-size: 13.5px; color: var(--ink-2); line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .rel-sub { font-size: 11.5px; color: var(--muted); margin: 10px 0 4px; }
+  .rel-sub:first-of-type { margin-top: 0; }
+  .rel { display: flex; align-items: center; gap: 10px; width: 100%; padding: 6px 8px; margin-inline: -8px; border-radius: 9px; text-align: start; width: calc(100% + 16px); }
+  .rel:hover { background: var(--surface-3); }
+  .rel .nm { font-weight: 500; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rel .mt { font-size: 11.5px; color: var(--muted); }
+  .rel .tx { min-width: 0; flex: 1; }
+  .rel .go { color: var(--muted); font-size: 11px; opacity: 0; }
+  .rel:hover .go { opacity: 1; }
+  .empty-rel { font-size: 12.5px; color: var(--muted); }
+  .p-grab { display: none; }
+  .p-head { position: relative; }
+  .p-collapse { position: absolute; top: 12px; inset-inline-end: 12px; color: var(--muted); }
+  @media (min-width: 821px) { .panel.collapsed { display: none; } }
+  .reopen { position: absolute; top: 14px; inset-inline-end: 14px; z-index: 5; padding-inline-end: 12px; height: 36px; }
+  .reopen .av { width: 26px; height: 26px; font-size: 10.5px; }
+  .reopen i.fa-angles-right { color: var(--muted); font-size: 11px; margin-inline-start: 2px; }
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .stat { background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; min-width: 0; }
+  .stat b { display: block; font-size: 20px; font-weight: 600; line-height: 1.2; }
+  .stat span { font-size: 11.5px; color: var(--muted); white-space: nowrap; }
+  .stat.total { background: var(--accent-soft); border-color: transparent; }
+  .stat.total b { color: var(--accent-ink); }
+  .stat-note { font-size: 11.5px; color: var(--muted); margin-top: 8px; }
+
+  .menu {
+    position: absolute; top: calc(100% - 6px); inset-inline-end: 24px; z-index: 30;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 11px; box-shadow: var(--shadow-lg);
+    padding: 5px; min-width: 190px;
+  }
+  .menu button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 10px; border-radius: 7px; font-size: 13px; text-align: start; }
+  .menu button:hover { background: var(--surface-3); }
+  .menu button i { width: 16px; color: var(--muted); text-align: center; }
+
+  /* ---------- People directory ---------- */
+  .people { flex: 1; overflow: auto; }
+  .people-in { max-width: 1180px; margin: 0 auto; padding: 26px 24px 60px; }
+  .people-head { display: flex; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+  .people-head h2 { font-family: var(--serif); font-size: 28px; font-weight: 700; letter-spacing: -.01em; line-height: 1.1; }
+  .people-head p { color: var(--muted); margin-top: 4px; }
+  .kpis { display: flex; gap: 10px; margin-inline-start: auto; }
+  .kpi { background: var(--surface); border: 1px solid var(--line); border-radius: 11px; padding: 8px 14px; min-width: 92px; }
+  .kpi b { display: block; font-size: 19px; font-weight: 600; line-height: 1.2; }
+  .kpi span { font-size: 11.5px; color: var(--muted); }
+  .filters { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 20px; position: sticky; top: 0; z-index: 3; padding: 10px 0; background: var(--bg); }
+  .field-in { position: relative; flex: 1; min-width: 220px; max-width: 360px; }
+  .field-in i { position: absolute; inset-inline-start: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 12px; }
+  .field-in input { width: 100%; height: 36px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); padding-inline: 32px 12px; outline: none; }
+  .field-in input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .sel { height: 36px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); padding-inline: 10px; outline: none; }
+  .grp { margin-bottom: 26px; }
+  .grp-h { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+  .grp-h h3 { font-family: var(--serif); font-size: 18px; font-weight: 700; }
+  .grp-h span { color: var(--muted); font-size: 12px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; }
+  .pc {
+    display: flex; align-items: center; gap: 12px; padding: 11px 13px; text-align: start;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow-sm);
+    transition: border-color .15s, box-shadow .15s, transform .15s;
+  }
+  .pc:hover { border-color: var(--line-strong); box-shadow: var(--shadow); transform: translateY(-1px); }
+  .pc .tx { min-width: 0; flex: 1; }
+  .pc .nm { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pc .mt { color: var(--muted); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pc .yr { color: var(--muted); font-size: 12px; flex: none; }
+  .none { text-align: center; color: var(--muted); padding: 60px 0; }
+
+  /* ---------- Modal ---------- */
+  .scrim { position: fixed; inset: 0; background: rgba(20, 19, 16, .42); z-index: 50; display: grid; place-items: center; padding: 20px; animation: fadeIn .15s; }
+  .modal {
+    width: min(680px, 100%); max-height: calc(100dvh - 40px); background: var(--surface); border-radius: 16px;
+    box-shadow: var(--shadow-lg); display: flex; flex-direction: column; animation: pop .2s cubic-bezier(.2,.7,.2,1);
+  }
+  @keyframes pop { from { transform: translateY(8px) scale(.98); opacity: 0; } }
+  .modal-head { display: flex; align-items: center; gap: 12px; padding: 18px 22px; border-bottom: 1px solid var(--line); }
+  .modal-head h2 { font-family: var(--serif); font-size: 21px; flex: 1; }
+  .modal-body { padding: 18px 22px; overflow: auto; }
+  .modal-foot { display: flex; gap: 8px; justify-content: flex-end; padding: 14px 22px; border-top: 1px solid var(--line); background: var(--surface-2); border-radius: 0 0 16px 16px; }
+  .fs { margin-bottom: 18px; }
+  .fs:last-child { margin-bottom: 0; }
+  .fs > h4 { font-size: 11px; font-weight: 600; letter-spacing: .06em; color: var(--muted); margin-bottom: 10px; }
+  .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-bottom: 12px; }
+  .row:last-child { margin-bottom: 0; }
+  .f label { display: block; font-size: 12.5px; font-weight: 500; color: var(--ink-2); margin-bottom: 5px; }
+  .f label .req { color: #c0392b; }
+  .f input, .f select, .f textarea {
+    width: 100%; height: 38px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface);
+    padding-inline: 11px; outline: none; transition: border-color .15s, box-shadow .15s;
+  }
+  .f textarea { height: auto; min-height: 90px; padding-block: 9px; resize: vertical; line-height: 1.6; }
+  .f input:focus, .f select:focus, .f textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .f .help { font-size: 11.5px; color: var(--muted); margin-top: 4px; }
+  .picker { position: relative; }
+  .picker .results { top: calc(100% + 4px); max-height: 240px; }
+  .picker.linked input { border-color: var(--accent); background: var(--accent-soft); padding-inline-end: 34px; }
+  .picker .clr { position: absolute; inset-inline-end: 6px; top: 6px; width: 26px; height: 26px; border-radius: 6px; color: var(--muted); display: none; }
+  .picker.linked .clr { display: grid; place-items: center; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+  .chips:empty { display: none; }
+  .chips .chip { box-shadow: none; padding-inline-end: 4px; }
+  .chips .chip button { width: 20px; height: 20px; border-radius: 99px; color: var(--muted); font-size: 10px; }
+  .chips .chip button:hover { background: var(--surface-3); color: var(--ink); }
+
+  .toasts { position: fixed; bottom: 22px; right: 50%; transform: translateX(50%); z-index: 60; display: flex; flex-direction: column; gap: 8px; align-items: center; pointer-events: none; }
+  .toast { display: flex; align-items: center; gap: 9px; background: var(--ink); color: var(--surface); padding: 10px 16px; border-radius: 10px; box-shadow: var(--shadow-lg); font-size: 13px; font-weight: 500; animation: toastIn .22s ease; }
+  .toast.err i { color: #ff8a95; }
+  .toast.ok i { color: #6fe0c4; }
+  @keyframes toastIn { from { transform: translateY(10px); opacity: 0; } }
+
+  .loading { position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted); z-index: 3; }
+
+  /* ---------- Relationship path ---------- */
+  .nd.target { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(184,137,43,.22), var(--shadow-lg); }
+  .pathbar {
+    position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 6;
+    width: min(760px, calc(100% - 28px)); background: var(--surface); border: 1px solid var(--line);
+    border-radius: 14px; box-shadow: var(--shadow-lg); padding: 12px 14px;
+  }
+  .pb-top { display: flex; gap: 12px; align-items: center; }
+  .pb-ic { width: 36px; height: 36px; border-radius: 10px; background: var(--accent-soft); color: var(--accent-ink); display: grid; place-items: center; flex: none; }
+  .pb-text { flex: 1; min-width: 0; }
+  .pb-text b { font-family: var(--serif); font-size: 17px; font-weight: 700; display: block; line-height: 1.35; }
+  .pb-sub { font-size: 12px; color: var(--muted); }
+  .pb-chain { display: flex; align-items: center; gap: 6px; overflow-x: auto; margin-top: 10px; padding: 2px 0 4px; scrollbar-width: thin; }
+  .pb-step { font-size: 11px; color: var(--muted); white-space: nowrap; flex: none; }
+  .stage.pathmode .stepper, .stage.pathmode .sibcard, .stage.pathmode .trail, .stage.pathmode .hint { display: none; }
+  .relpick { width: 310px; padding: 12px; }
+  .relpick .rp-h { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+  .relpick input { width: 100%; height: 36px; border: 1px solid var(--line); border-radius: 9px; padding-inline: 11px; background: var(--surface); outline: none; }
+  .relpick input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 1100px) { .panel { width: 330px; } .brand p { display: none; } }
+  @media (max-width: 820px) {
+    .appbar { flex-wrap: wrap; padding: 10px 16px; gap: 10px; }
+    .brand h1 { font-size: 18px; }
+    .search { order: 5; flex-basis: 100%; max-width: none; }
+    .search kbd { display: none; }
+    .appbar .grow { flex: 1; }
+    .btn.add span { display: none; }
+    .btn.add { width: 36px; padding: 0; }
+    .seg button { padding: 6px 10px; }
+    .seg button i { display: none; }
+    .brand-mark { width: 32px; height: 32px; font-size: 14px; }
+    .hint { display: none; }
+    .p-collapse { display: none; }
+    .pathbar { bottom: calc(var(--sheet-peek, 76px) + 10px); padding: 10px 12px; }
+    .pb-text b { font-size: 15px; }
+    .stepper .lbl span { display: none; }
+    .zoomcard { display: none !important; }
+    .tools { top: 10px; inset-inline-start: 10px; gap: 6px; }
+    .trail { bottom: calc(var(--sheet-peek, 76px) + 10px); inset-inline: 10px; }
+    .view-tree { flex-direction: column; }
+    .panel {
+      position: absolute; inset-inline: 0; bottom: 0; width: auto; border-inline-start: 0;
+      border-top: 1px solid var(--line); border-radius: 18px 18px 0 0; box-shadow: 0 -8px 30px rgba(0,0,0,.12);
+      max-height: 76px; transition: max-height .3s cubic-bezier(.2,.7,.2,1); overflow: hidden;
+    }
+    .panel.open { max-height: 72dvh; }
+    .p-grab { display: block; width: 40px; height: 4px; border-radius: 4px; background: var(--line-strong); margin: 8px auto 0; flex: none; }
+    .p-head { padding: 8px 18px 14px; cursor: pointer; align-items: center; }
+    .panel:not(.open) .p-head .av.lg { width: 40px; height: 40px; font-size: 15px; }
+    .panel:not(.open) .p-name { font-size: 18px; }
+    .panel:not(.open) .tags, .panel:not(.open) .p-en { display: none; }
+    .p-actions, .sec { padding-inline: 18px; }
+    .people-in { padding: 18px 16px 50px; }
+    .kpis { margin-inline-start: 0; width: 100%; }
+    .kpi { flex: 1; min-width: 0; }
+    .scrim { padding: 0; align-items: end; }
+    .modal { border-radius: 16px 16px 0 0; max-height: 92dvh; }
+    .modal-foot { border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+  <header class="appbar">
+    <div class="brand">
+      <div class="brand-mark"><i class="fas fa-sitemap"></i></div>
+      <div>
+        <h1>אילן יוחסין</h1>
+        <p id="brandSub">טוען…</p>
+      </div>
+    </div>
+    <div class="search" id="searchBox">
+      <i class="fas fa-magnifying-glass"></i>
+      <input id="q" type="search" autocomplete="off" placeholder="חיפוש אדם לפי שם, כינוי או שם באנגלית…" aria-label="חיפוש" />
+      <kbd>/</kbd>
+      <div class="results" id="qResults" hidden></div>
+    </div>
+    <div class="grow"></div>
+    <div class="seg" role="tablist">
+      <button class="active" data-view="tree"><i class="fas fa-sitemap"></i>עץ</button>
+      <button data-view="people"><i class="fas fa-users"></i>אנשים</button>
+    </div>
+    <button class="btn primary add" id="addBtn"><i class="fas fa-user-plus"></i><span>הוספת אדם</span></button>
+  </header>
+
+  <main>
+    <section class="view view-tree" id="viewTree">
+      <div class="stage" id="stage">
+        <div class="loading" id="loading"><span><i class="fas fa-circle-notch fa-spin"></i>&nbsp; טוען את העץ…</span></div>
+        <div class="world" id="world">
+          <svg class="wires" id="wires" width="1" height="1"></svg>
+          <div id="labels"></div>
+          <div id="nodes"></div>
+        </div>
+        <div class="tools">
+          <div class="card stepper" title="דורות קודמים">
+            <span class="lbl"><i class="fas fa-arrow-up"></i><span>דורות קודמים</span></span>
+            <button class="tbtn" data-step="up:-1" aria-label="פחות"><i class="fas fa-minus"></i></button>
+            <b class="num" id="upVal">2</b>
+            <button class="tbtn" data-step="up:1" aria-label="יותר"><i class="fas fa-plus"></i></button>
+          </div>
+          <div class="card stepper" title="דורות הבאים">
+            <span class="lbl"><i class="fas fa-arrow-down"></i><span>דורות הבאים</span></span>
+            <button class="tbtn" data-step="down:-1" aria-label="פחות"><i class="fas fa-minus"></i></button>
+            <b class="num" id="downVal">2</b>
+            <button class="tbtn" data-step="down:1" aria-label="יותר"><i class="fas fa-plus"></i></button>
+          </div>
+          <div class="card sibcard">
+            <button class="tbtn on" id="sibBtn" title="הצגת אחים"><i class="fas fa-people-arrows"></i></button>
+          </div>
+          <div class="card zoomcard">
+            <button class="tbtn" id="zOut" title="הקטנה"><i class="fas fa-minus"></i></button>
+            <span class="zoomval num" id="zVal">100%</span>
+            <button class="tbtn" id="zIn" title="הגדלה"><i class="fas fa-plus"></i></button>
+            <span class="sep"></span>
+            <button class="tbtn" id="zFit" title="התאמה למסך"><i class="fas fa-expand"></i></button>
+            <button class="tbtn" id="zCenter" title="מרכוז"><i class="fas fa-crosshairs"></i></button>
+          </div>
+        </div>
+        <div class="trail" id="trail"></div>
+        <button class="chip reopen" id="reopen" hidden title="הצגת פרטים"></button>
+        <div class="pathbar" id="pathbar" hidden></div>
+        <div class="hint">גרירה להזזה · גלגלת לזום · <kbd>↑</kbd><kbd>↓</kbd> הורה/ילד · <kbd>←</kbd><kbd>→</kbd> אחים</div>
+      </div>
+      <aside class="panel" id="panel"></aside>
+    </section>
+
+    <section class="view people" id="viewPeople" hidden>
+      <div class="people-in">
+        <div class="people-head">
+          <div>
+            <h2>כל האנשים</h2>
+            <p>לחיצה על אדם פותחת אותו בעץ</p>
+          </div>
+          <div class="kpis" id="kpis"></div>
+        </div>
+        <div class="filters">
+          <div class="field-in"><i class="fas fa-filter"></i><input id="pq" type="search" placeholder="סינון…" /></div>
+          <div class="seg" id="pGender">
+            <button class="active" data-g="">הכל</button>
+            <button data-g="m">גברים</button>
+            <button data-g="f">נשים</button>
+          </div>
+          <select class="sel" id="pSort">
+            <option value="family">לפי משפחה</option>
+            <option value="name">לפי שם (א–ת)</option>
+            <option value="born">לפי שנת לידה</option>
+          </select>
+        </div>
+        <div id="plist"></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="toasts" id="toasts"></div>
+
+<script>
+  const APP_PREFIX = /^\/famtree(\/|$)/.test(location.pathname) ? '/famtree' : '';
+  const API = location.origin + APP_PREFIX;
+  const TOKEN = '__API_TOKEN__'; // filled in by the server from .env (routes/index.js)
+
+  // Card geometry (world px)
+  const CW = 188, CH = 64, GX = 18, GG = 44, ROW = 150;
+
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem('famtree.' + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
+    set(k, v) { try { localStorage.setItem('famtree.' + k, JSON.stringify(v)); } catch {} },
+  };
+
+  // ---------------- Data ----------------
+  let M = new Map();      // uuid -> member
+  let KIDS = new Map();   // uuid -> [child uuids], sorted by age
+  const S = {
+    focus: null,
+    up: store.get('up', 2), down: store.get('down', 2), sibs: store.get('sibs', true),
+    k: 1, tx: 0, ty: 0,
+    view: 'tree',
+    recent: store.get('recent', []),
+    panelOpen: false,
+    collapsed: store.get('collapsed', false),
+  };
+
+  const idOf = v => v ? String(v).split('/').pop() : null;
+  // final letters fold to their regular form, so "אברהמ" (typed without ם) still matches
+  const FINALS = { 'ך': 'כ', 'ם': 'מ', 'ן': 'נ', 'ף': 'פ', 'ץ': 'צ' };
+  const norm = s => String(s || '').toLowerCase().replace(/[֑-ׇ]/g, '').replace(/["'״׳`]/g, '')
+    .replace(/[ךםןףץ]/g, c => FINALS[c]).trim();
+
+  // Standard Israeli keyboard: what each English key types in Hebrew layout.
+  // Lets "tcrvo" (אברהם typed with the wrong layout) find אברהם, and back.
+  const EN_HE = { q: '/', w: "'", e: 'ק', r: 'ר', t: 'א', y: 'ט', u: 'ו', i: 'ן', o: 'ם', p: 'פ',
+    a: 'ש', s: 'ד', d: 'ג', f: 'כ', g: 'ע', h: 'י', j: 'ח', k: 'ל', l: 'ך', ';': 'ף', "'": ',',
+    z: 'ז', x: 'ס', c: 'ב', v: 'ה', b: 'נ', n: 'מ', m: 'צ', ',': 'ת', '.': 'ץ', '/': '.' };
+  const HE_EN = Object.fromEntries(Object.entries(EN_HE).filter(([k, v]) => /[א-ת]/.test(v)).map(([k, v]) => [v, k]));
+  // Normalized forms of a query: as typed, plus the other keyboard layout's reading.
+  function queryForms(q) {
+    const raw = String(q || '').toLowerCase();
+    const forms = [norm(raw)];
+    if (/[a-z]/.test(raw) && !/[א-ת]/.test(raw)) forms.push(norm([...raw].map(c => EN_HE[c] ?? c).join('')));
+    else if (/[א-ת]/.test(raw) && !/[a-z]/.test(raw)) forms.push(norm([...raw].map(c => HE_EN[c] ?? c).join('')));
+    return [...new Set(forms.filter(Boolean))];
+  }
+  const matchesQuery = (m, forms) => !forms.length || forms.some(f => m.idx.includes(f));
+
+  async function loadData() {
+    const r = await fetch(API + '/members');
+    if (!r.ok) throw new Error('load failed');
+    const arr = await r.json();
+    M = new Map(); KIDS = new Map();
+    arr.forEach(raw => {
+      M.set(raw.uuid, { ...raw, father: idOf(raw.father), mother: idOf(raw.mother), spouses: (raw.spouses || []).map(idOf).filter(Boolean) });
+    });
+    M.forEach(m => {
+      if (m.father && !M.has(m.father)) m.father = null;
+      if (m.mother && !M.has(m.mother)) m.mother = null;
+      m.spouses = [...new Set(m.spouses.filter(s => M.has(s) && s !== m.uuid))];
+    });
+    M.forEach(m => m.spouses.forEach(s => { const o = M.get(s); if (!o.spouses.includes(m.uuid)) o.spouses.push(m.uuid); }));
+    M.forEach(m => [m.father, m.mother].forEach(p => { if (p) { if (!KIDS.has(p)) KIDS.set(p, []); KIDS.get(p).push(m.uuid); } }));
+    M.forEach(m => { m.g = m.gender === 'male' ? 'm' : m.gender === 'female' ? 'f' : null; });
+    M.forEach(m => {
+      if (m.father && !M.get(m.father).g) M.get(m.father).g = 'm';
+      if (m.mother && !M.get(m.mother).g) M.get(m.mother).g = 'f';
+    });
+    M.forEach(m => { if (!m.g) { const sp = m.spouses.map(s => M.get(s).g).find(Boolean); if (sp) m.g = sp === 'm' ? 'f' : 'm'; } });
+    M.forEach(m => {
+      m.by = birthYear(m); m.dy = deathYear(m);
+      m.idx = norm([m.name, m.hebrewNickname, m.hebrewSurname, m.englishNickname, m.englishSurname, m.calendarName].join(' '));
+    });
+    KIDS.forEach(list => list.sort(byAge));
+    S.recent = S.recent.filter(u => M.has(u));
+    updateBrand();
+  }
+
+  function birthYear(m) {
+    if (m.birthdate && /^\d{3,4}/.test(m.birthdate)) return parseInt(m.birthdate, 10);
+    return Number.isFinite(m.born) ? m.born : null;
+  }
+  function deathYear(m) {
+    if (m.passedDate && /^\d{3,4}/.test(m.passedDate)) return parseInt(m.passedDate, 10);
+    return Number.isFinite(m.passed) ? m.passed : null;
+  }
+  function byAge(a, b) {
+    const A = M.get(a), B = M.get(b);
+    const ka = A.birthdate || (A.by != null ? String(A.by).padStart(4, '0') : null);
+    const kb = B.birthdate || (B.by != null ? String(B.by).padStart(4, '0') : null);
+    if (ka == null && kb == null) return 0;
+    if (ka == null) return 1;
+    if (kb == null) return -1;
+    return ka < kb ? -1 : ka > kb ? 1 : 0;
+  }
+  const isLiving = m => m.dy == null && !!m.birthdate && m.by >= 1900;
+  function ageOf(m) {
+    if (m.by != null && m.dy != null) return m.dy - m.by;
+    if (isLiving(m)) {
+      const b = new Date(m.birthdate), n = new Date();
+      let a = n.getFullYear() - b.getFullYear();
+      if (n.getMonth() < b.getMonth() || (n.getMonth() === b.getMonth() && n.getDate() < b.getDate())) a--;
+      return a;
+    }
+    return null;
+  }
+  function years(m) {
+    // LRI…PDI keeps "1924–1989" in left-to-right order inside Hebrew text
+    if (m.by != null && m.dy != null) return `⁦${m.by}–${m.dy}⁩`;
+    if (m.by != null) return `נ. ${m.by}`;
+    if (m.dy != null) return `נפ׳ ${m.dy}`;
+    return '';
+  }
+  function initials(name) {
+    const w = String(name || '').replace(/["'״׳()]/g, '').trim().split(/\s+/).filter(Boolean);
+    if (!w.length) return '?';
+    return w.length === 1 ? w[0].slice(0, 2) : w[0][0] + w[w.length - 1][0];
+  }
+  const gcls = m => 'g-' + (m.g || 'u');
+  const enName = m => [m.englishNickname, m.englishSurname].filter(Boolean).join(' ');
+  function childWord(m) { return m.g === 'f' ? 'בת' : m.g === 'm' ? 'בן' : 'צאצא/ית'; }
+  function parentsLine(m) {
+    const ps = [m.father, m.mother].filter(Boolean).map(u => M.get(u).name);
+    return ps.length ? `${childWord(m)} ${ps.join(' ו')}` : '';
+  }
+  function avatar(m, size = '') { return `<span class="av ${size} ${gcls(m)}">${esc(initials(m.name))}</span>`; }
+
+  function updateBrand() {
+    $('#brandSub').textContent = `${M.size} אנשים · ${countGenerations()} דורות`;
+  }
+  function countGenerations() {
+    const memo = new Map();
+    const depth = (u, seen = new Set()) => {
+      if (memo.has(u)) return memo.get(u);
+      if (seen.has(u)) return 0;
+      seen.add(u);
+      const m = M.get(u);
+      const d = 1 + Math.max(0, ...[m.father, m.mother].filter(Boolean).map(p => depth(p, seen)));
+      memo.set(u, d); return d;
+    };
+    let best = 0; M.forEach((_, u) => { best = Math.max(best, depth(u)); });
+    return best;
+  }
+
+  // ---------------- Relations ----------------
+  function otherParent(child, u) { const c = M.get(child); return c.father === u ? c.mother : c.father; }
+  function partnersOf(u) {
+    const ps = [...M.get(u).spouses];
+    (KIDS.get(u) || []).forEach(c => { const o = otherParent(c, u); if (o && !ps.includes(o)) ps.push(o); });
+    return ps;
+  }
+  function kidsWith(u, p) { return (KIDS.get(u) || []).filter(c => (otherParent(c, u) || null) === (p || null)); }
+  function siblingsOf(u) {
+    const m = M.get(u);
+    const full = [], half = [];
+    const pool = new Set([...(KIDS.get(m.father) || []), ...(KIDS.get(m.mother) || [])]);
+    pool.delete(u);
+    pool.forEach(s => {
+      const o = M.get(s);
+      const same = (o.father || null) === (m.father || null) && (o.mother || null) === (m.mother || null);
+      (same ? full : half).push(s);
+    });
+    return { full: full.sort(byAge), half: half.sort(byAge) };
+  }
+
+  // ---------------- Layout ----------------
+  // Computed in "reading order" (x grows forward), then mirrored for RTL.
+  let L = null;
+  let EXPAND = null;   // relationship view: only these people's children are opened
+
+  function unitSeq(u, ps) {
+    const before = [], after = [];
+    ps.forEach((p, i) => (i % 2 === 0 ? after : before).push(p));
+    return [...before.reverse(), u, ...after];
+  }
+
+  function dMeasure(u, lvl, seen) {
+    const ps = partnersOf(u);
+    const seq = unitSeq(u, ps);
+    const unitW = seq.length * CW + (seq.length - 1) * GX;
+    const groups = [];
+    if (EXPAND ? EXPAND.has(u) : lvl < S.down) {
+      seq.forEach(x => {
+        const ks = (x === u ? kidsWith(u, null) : kidsWith(u, x)).filter(c => !seen.has(c));
+        if (ks.length) groups.push({ partner: x === u ? null : x, kids: ks.map(c => ({ u: c, m: dMeasure(c, lvl + 1, new Set([...seen, c])) })) });
+      });
+    }
+    let cw = 0, prev = null;
+    groups.forEach((g, gi) => g.kids.forEach((k, ki) => {
+      if (prev) cw += (gi > 0 && ki === 0) ? GG : (prev.m.w === CW && k.m.w === CW ? GX : GG);
+      cw += k.m.w; prev = k;
+    }));
+    const hidden = (EXPAND ? !EXPAND.has(u) : lvl >= S.down) ? (KIDS.get(u) || []).length : 0;
+    return { u, lvl, seq, unitW, groups, cw, w: Math.max(unitW, cw), hidden };
+  }
+
+  function addNode(u, x, y, role, extra = {}) {
+    const n = { u, x, y, role, ...extra };
+    L.nodes.push(n);
+    return n;
+  }
+
+  // Places a measured unit with its span centred on `cx` at row `row`.
+  function dPlace(dm, cx, row, roleSelf, rolePartner) {
+    const y = row * ROW;
+    const iu = dm.seq.indexOf(dm.u);
+    const step = CW + GX;
+    const ux = cx - ((dm.seq.length - 1) / 2 - iu) * step;
+    const self = addNode(dm.u, ux, y, roleSelf, { hiddenKids: dm.hidden });
+    const pn = {};
+    dm.seq.forEach((x, i) => {
+      if (x === dm.u) return;
+      pn[x] = addNode(x, ux + (i - iu) * step, y, rolePartner, { hiddenKids: row === 0 ? 0 : 0 });
+    });
+    // union lines
+    dm.seq.forEach((x, i) => {
+      if (x === dm.u) return;
+      const nearIdx = i < iu ? i + 1 : i - 1;
+      const near = dm.seq[nearIdx] === dm.u ? self : pn[dm.seq[nearIdx]];
+      L.unions.push({ a: self, b: pn[x], near, far: Math.abs(i - iu) > 1, key: dm.u + '+' + x });
+    });
+    // children
+    let x = cx - dm.cw / 2, prev = null;
+    dm.groups.forEach((g, gi) => {
+      const src = g.partner ? L.unions.find(un => un.a === self && un.b === pn[g.partner]) : { node: self };
+      g.kids.forEach((k, ki) => {
+        if (prev) x += (gi > 0 && ki === 0) ? GG : (prev.m.w === CW && k.m.w === CW ? GX : GG);
+        const child = dPlace(k.m, x + k.m.w / 2, row + 1, 'desc', 'dspouse');
+        L.desc.push({ src, to: child, hot: roleSelf === 'focus' || roleSelf === 'desc' });
+        x += k.m.w; prev = k;
+      });
+    });
+    return self;
+  }
+
+  function aWidth(u, lvl) {
+    if (lvl >= S.up) return CW;
+    const m = M.get(u);
+    if (!m.father && !m.mother) return CW;
+    const wf = m.father ? aWidth(m.father, lvl + 1) : 0;
+    const wm = m.mother ? aWidth(m.mother, lvl + 1) : 0;
+    const gap = m.father && m.mother ? (wf === CW && wm === CW ? GX : GG) : 0;
+    return Math.max(CW, wf + wm + gap);
+  }
+
+  function aPlace(node, lvl, extraKids = [], maxLvl = S.up) {
+    const m = M.get(node.u);
+    if (!m.father && !m.mother) return;
+    if (lvl >= maxLvl) { node.hiddenParents = true; return; }
+    const wf = m.father ? aWidth(m.father, lvl + 1) : 0;
+    const wm = m.mother ? aWidth(m.mother, lvl + 1) : 0;
+    const gap = m.father && m.mother ? (wf === CW && wm === CW ? GX : GG) : 0;
+    const total = wf + wm + gap;
+    const start = node.x - total / 2;
+    const y = node.y - ROW;
+    let fn = null, mn = null;
+    if (m.father) { fn = addNode(m.father, start + wf / 2, y, 'anc'); aPlace(fn, lvl + 1, [], maxLvl); }
+    if (m.mother) { mn = addNode(m.mother, start + (m.father ? wf + gap : 0) + wm / 2, y, 'anc'); aPlace(mn, lvl + 1, [], maxLvl); }
+    let src;
+    if (fn && mn) { src = { a: fn, b: mn, near: fn, far: false, key: m.father + '+' + m.mother }; L.unions.push(src); }
+    else src = { node: fn || mn };
+    const hot = node.role === 'focus' || node.role === 'anc';
+    [node, ...extraKids].forEach(k => L.desc.push({ src, to: k, hot: hot && k === node }));
+    return { fn, mn };
+  }
+
+  function layout() {
+    L = { nodes: [], unions: [], desc: [] };
+    const f = S.focus;
+    const dm = dMeasure(f, 0, new Set([f]));
+    const iu = dm.seq.indexOf(f);
+    const unitCenter = ((dm.seq.length - 1) / 2 - iu) * (CW + GX);
+    const focusNode = dPlace(dm, unitCenter, 0, 'focus', 'spouse');
+
+    // siblings, before the row-0 unit in reading order
+    const sibNodes = [];
+    if (S.sibs && S.up > 0) {
+      const sibs = siblingsOf(f).full;
+      const row0 = L.nodes.filter(n => n.y === 0);
+      const minX = Math.min(...row0.map(n => n.x));
+      sibs.forEach((s, i) => {
+        // eldest farthest away, nearest sibling one group-gap from the unit
+        const x = minX - CW - GG - (sibs.length - 1 - i) * (CW + GX);
+        sibNodes.push(addNode(s, x, 0, 'sib'));
+      });
+    }
+
+    if (S.up > 0) aPlace(focusNode, 0, sibNodes);
+
+    // in-laws: parents of the focus person's partners (one generation)
+    if (S.up > 0) {
+      L.nodes.filter(n => n.role === 'spouse').forEach(pn => {
+        const m = M.get(pn.u);
+        if (!m.father && !m.mother) return;
+        const dir = Math.sign(pn.x - focusNode.x) || 1;
+        const before = L.nodes.length;
+        const res = aPlace(pn, 0, [], 1);
+        const block = L.nodes.slice(before);
+        if (!block.length) return;
+        block.forEach(n => (n.role = 'inlaw'));
+        const others = L.nodes.slice(0, before).filter(n => n.y === -ROW);
+        for (let guard = 0; guard < 60; guard++) {
+          const lo = Math.min(...block.map(n => n.x)) - CW / 2, hi = Math.max(...block.map(n => n.x)) + CW / 2;
+          const hit = others.find(o => o.x + CW / 2 + GG > lo && o.x - CW / 2 - GG < hi);
+          if (!hit) break;
+          const shift = dir > 0 ? (hit.x + CW / 2 + GG) - lo : (hit.x - CW / 2 - GG) - hi;
+          block.forEach(n => (n.x += shift));
+        }
+      });
+    }
+
+    return finalize(focusNode);
+  }
+
+  function finalize(focusNode) {
+    // mirror for RTL
+    L.nodes.forEach(n => (n.x = -n.x));
+
+    // stable keys (a person can appear twice through cousin marriages)
+    const seen = new Map();
+    L.nodes.forEach(n => { const c = seen.get(n.u) || 0; seen.set(n.u, c + 1); n.key = c ? n.u + '#' + c : n.u; });
+
+    const xs = L.nodes.map(n => n.x), ys = L.nodes.map(n => n.y);
+    L.box = { x0: Math.min(...xs) - CW / 2, x1: Math.max(...xs) + CW / 2, y0: Math.min(...ys), y1: Math.max(...ys) + CH };
+    L.focusNode = focusNode;
+    const hl = L.nodes.filter(n => n.hl);
+    L.hbox = hl.length ? {
+      x0: Math.min(...hl.map(n => n.x)) - CW / 2, x1: Math.max(...hl.map(n => n.x)) + CW / 2,
+      y0: Math.min(...hl.map(n => n.y)), y1: Math.max(...hl.map(n => n.y)) + CH,
+    } : null;
+    return L;
+  }
+
+  // ---------------- Relationship finder ----------------
+  // Ancestors of u by generation distance, with a back-pointer toward u.
+  function ancBFS(u) {
+    const map = new Map([[u, { d: 0, prev: null }]]);
+    let cur = [u];
+    while (cur.length) {
+      const nx = [];
+      cur.forEach(x => {
+        const m = M.get(x);
+        [m.father, m.mother].forEach(p => { if (p && !map.has(p)) { map.set(p, { d: map.get(x).d + 1, prev: x }); nx.push(p); } });
+      });
+      cur = nx;
+    }
+    return map;
+  }
+
+  function findRelation(a, b) {
+    // 1) blood: nearest common ancestor (fewest total generations, then most even split)
+    const A = ancBFS(a), B = ancBFS(b);
+    let best = null;
+    A.forEach((va, k) => {
+      const vb = B.get(k);
+      if (!vb) return;
+      const sum = va.d + vb.d, df = Math.abs(va.d - vb.d);
+      if (!best || sum < best.sum || (sum === best.sum && df < best.df)) best = { k, sum, df, da: va.d, db: vb.d };
+    });
+    let blood = null;
+    if (best) {
+      const up = [], down = [];
+      for (let x = best.k; x; x = A.get(x).prev) up.unshift(x);    // a ... k
+      for (let x = best.k; x; x = B.get(x).prev) down.push(x);     // k ... b
+      const partner = best.da && best.db
+        ? M.get(best.k).spouses.find(s => A.get(s)?.d === best.da && B.get(s)?.d === best.db) || null : null;
+      blood = { kind: 'blood', path: [...up, ...down.slice(1)], moves: 'U'.repeat(best.da) + 'D'.repeat(best.db), partner, da: best.da, db: best.db };
+    }
+    // 2) any connection: shortest path over parent / child / spouse links
+    const prev = new Map([[a, null]]);
+    let q = [a], found = false;
+    while (q.length && !found) {
+      const nx = [];
+      for (const x of q) {
+        const m = M.get(x);
+        const nb = [
+          ...[m.father, m.mother].filter(Boolean).map(p => [p, 'U']),
+          ...(KIDS.get(x) || []).map(c => [c, 'D']),
+          ...m.spouses.map(s => [s, 'S']),
+        ];
+        for (const [y, mv] of nb) {
+          if (prev.has(y)) continue;
+          prev.set(y, [x, mv]);
+          if (y === b) { found = true; break; }
+          nx.push(y);
+        }
+        if (found) break;
+      }
+      q = nx;
+    }
+    let any = null;
+    if (found) {
+      const path = [b], mv = [];
+      for (let x = b; prev.get(x); x = prev.get(x)[0]) { mv.unshift(prev.get(x)[1]); path.unshift(prev.get(x)[0]); }
+      any = { kind: 'any', path, moves: mv.join(''), partner: null };
+    }
+    if (!blood && !any) return null;
+    // prefer the blood line unless a marriage route is much shorter
+    const chosen = blood && (!any || blood.moves.length <= any.moves.length + 2) ? blood : any;
+    return { ...chosen, blood };
+  }
+
+  // Lays out just the chain between the two people: A's line climbs one
+  // column, the common ancestor sits centred on top, B's line descends the next.
+  function pathLayout() {
+    const { path, moves, partner, da } = S.path.res;
+    // A path that is "up to a shared ancestor, then down" (optionally with a
+    // marriage at either end) is drawn as the real tree from that ancestor.
+    const s0 = moves[0] === 'S' ? 1 : 0;
+    const e0 = moves.length > s0 && moves[moves.length - 1] === 'S' ? moves.length - 1 : moves.length;
+    const core = moves.slice(s0, e0);
+    if (/^U*D*$/.test(core)) return pathTreeLayout(path, moves, partner, s0 + core.match(/^U*/)[0].length);
+
+    // Otherwise (zig-zags through marriages) fall back to a plain chain.
+    L = { nodes: [], unions: [], desc: [], allHot: true };
+    const step = CW + GG, cols = [0], rows = [0];
+    for (let i = 1; i < path.length; i++) {
+      const mv = moves[i - 1], pv = moves[i - 2];
+      let c = cols[i - 1], r = rows[i - 1];
+      if (mv === 'U') { r--; if (pv === 'D') c += 1; }
+      else if (mv === 'D') {
+        r++;
+        if (pv === 'U') { c += 1; cols[i - 1] += 0.5; }   // centre the peak over both lines
+        else if (pv === 'S') c -= 0.5;                     // child under the couple
+      } else c += 1;
+      cols.push(c); rows.push(r);
+    }
+    const last = path.length - 1;
+    const nodes = path.map((u, i) => addNode(u, cols[i] * step, rows[i] * ROW, i === 0 ? 'focus' : i === last ? 'target' : 'path'));
+    let peakUnion = null;
+    if (partner) {
+      const pk = nodes[da];
+      pk.x -= (CW + GX) / 2;
+      const pn = addNode(partner, pk.x + CW + GX, pk.y, 'path');
+      peakUnion = { a: pk, b: pn, near: pk, far: false };
+      L.unions.push(peakUnion);
+    }
+    // Each person on the chain also gets a spouse beside them (a leaf, no further
+    // links): the other parent of the next child on the chain when there is one,
+    // otherwise their first spouse. Placed on the outer side of their line.
+    const onPath = new Set(path);
+    if (partner) onPath.add(partner);
+    const childOf = {};
+    for (let i = 1; i <= last; i++) {
+      if (moves[i - 1] === 'U') childOf[i] = path[i - 1];
+      else if (moves[i - 1] === 'D') childOf[i - 1] = path[i];
+    }
+    const mid = (Math.min(...cols) + Math.max(...cols)) / 2;
+    const spouseUnion = {};
+    nodes.forEach((n, i) => {
+      if ((partner && i === da) || moves[i - 1] === 'S' || moves[i] === 'S') return;
+      const child = childOf[i];
+      const co = child ? otherParent(child, n.u) : null;
+      const sp = co || M.get(n.u).spouses.find(s => !onPath.has(s));
+      if (!sp || onPath.has(sp)) return;
+      const pref = cols[i] < mid ? -1 : 1;
+      for (const dir of [pref, -pref]) {
+        const x = n.x + dir * (CW + GX);
+        if (L.nodes.some(o => o.y === n.y && Math.abs(o.x - x) < CW + GX - 1)) continue;
+        const sn = addNode(sp, x, n.y, 'pspouse');
+        spouseUnion[i] = { a: n, b: sn, near: n, far: false, hot: false, isParent: sp === co };
+        L.unions.push(spouseUnion[i]);
+        break;
+      }
+    });
+
+    const unionAt = {};
+    for (let i = 1; i <= last; i++) {
+      const mv = moves[i - 1], a = nodes[i - 1], b = nodes[i];
+      if (mv === 'S') { unionAt[i] = { a, b, near: a, far: false }; L.unions.push(unionAt[i]); continue; }
+      const [parent, child, pIdx] = mv === 'U' ? [b, a, i] : [a, b, i - 1];
+      let src = { node: parent };
+      if (peakUnion && pIdx === da) src = peakUnion;
+      else if (mv === 'D' && moves[i - 2] === 'S') src = unionAt[i - 1];
+      else if (spouseUnion[pIdx]?.isParent) src = spouseUnion[pIdx];
+      L.desc.push({ src, to: child, hot: true });
+    }
+    return finalize(nodes[0]);
+  }
+
+  function pathTreeLayout(path, moves, partner, kIdx) {
+    const onPath = new Set(path);
+    if (partner) onPath.add(partner);
+    // two lines meeting at a shared ancestor (cousins, uncles…) get their own layout
+    if (moves[kIdx - 1] === 'U' && moves[kIdx] === 'D') return pathTwoLines(path, moves, kIdx, onPath);
+
+    // a single line (ancestor ↔ descendant): the ordinary tree from the top
+    // person, opening children only where the path continues
+    L = { nodes: [], unions: [], desc: [] };
+    const K = path[kIdx];
+    const expand = new Set();
+    for (let i = 1; i < path.length; i++) {
+      if (moves[i - 1] === 'U') expand.add(path[i]);
+      else if (moves[i - 1] === 'D') expand.add(path[i - 1]);
+    }
+    EXPAND = expand;
+    const dm = dMeasure(K, 0, new Set([K]));
+    EXPAND = null;
+    dPlace(dm, 0, 0, 'desc', 'dspouse');
+    return highlightPath(path, onPath);
+  }
+
+  function highlightPath(path, onPath) {
+    const a = path[0], b = path[path.length - 1];
+    let aNode = null;
+    L.nodes.forEach(n => {
+      n.hl = onPath.has(n.u);
+      n.role = n.u === a ? 'focus' : n.u === b ? 'target' : n.hl ? 'path' : 'ctx';
+      if (n.u === a && !aNode) aNode = n;
+    });
+    L.unions.forEach(un => { un.hot = un.a.hl && un.b.hl; });
+    L.desc.forEach(d => { d.hot = d.to.hl && (d.src.node ? d.src.node.hl : (d.src.a.hl || d.src.b.hl)); });
+    return finalize(aNode || L.nodes[0]);
+  }
+
+  // A person plus their partners, as in the tree. `x` is the person's own centre.
+  function unitInfo(u) {
+    const seq = unitSeq(u, partnersOf(u)), iu = seq.indexOf(u), step = CW + GX;
+    return { u, seq, iu, before: iu * step + CW / 2, after: (seq.length - 1 - iu) * step + CW / 2 };
+  }
+  function unitAt(info, x, row, side, hidden) {
+    const { u, seq, iu } = info, step = CW + GX, y = row * ROW;
+    const self = addNode(u, x, y, 'ctx', { hiddenKids: hidden, side });
+    const pn = {}, unions = {};
+    seq.forEach((p, i) => { if (p !== u) pn[p] = addNode(p, x + (i - iu) * step, y, 'ctx', { side }); });
+    seq.forEach((p, i) => {
+      if (p === u) return;
+      const ni = i < iu ? i + 1 : i - 1;
+      unions[p] = { a: self, b: pn[p], near: seq[ni] === u ? self : pn[seq[ni]], far: Math.abs(i - iu) > 1 };
+      L.unions.push(unions[p]);
+    });
+    return { self, unions };
+  }
+  // where a child's line leaves its parents: the couple's marker, or the parent
+  function srcFor(unit, child) {
+    const o = otherParent(child, unit.self.u);
+    return o && unit.unions[o] ? unit.unions[o] : { node: unit.self };
+  }
+  function anchorOf(src) {
+    if (src.node) return src.node.x;
+    const { near, b } = src;
+    return (near.x + b.x) / 2;
+  }
+
+  // Cousin-style paths: the shared ancestor on top, each line dropping straight
+  // down under its parents' couple, the other siblings fanned out on the outer side.
+  function pathTwoLines(path, moves, kIdx, onPath) {
+    L = { nodes: [], unions: [], desc: [] };
+    const s0 = moves[0] === 'S' ? 1 : 0;
+    const eIdx = moves[moves.length - 1] === 'S' ? path.length - 2 : path.length - 1;
+    const K = path[kIdx];
+    const aLine = [], bLine = [];
+    for (let i = kIdx - 1; i >= s0; i--) aLine.push(path[i]);
+    for (let i = kIdx + 1; i <= eIdx; i++) bLine.push(path[i]);
+    const kids = u => (KIDS.get(u) || []).length;
+
+    const kUnit = unitAt(unitInfo(K), 0, 0, 'K', 0);
+    const aSrc0 = srcFor(kUnit, aLine[0]), bSrc0 = srcFor(kUnit, bLine[0]);
+    const mid = (anchorOf(aSrc0) + anchorOf(bSrc0)) / 2;
+
+    // row 1: the two path children side by side, K's other children split outside
+    const placeRow = (parentUnit, child, x, row, side, isLast) => {
+      const unit = unitAt(unitInfo(child), x, row, side, isLast ? kids(child) : 0);
+      L.desc.push({ src: srcFor(parentUnit, child), to: unit.self });
+      return unit;
+    };
+    const fanOut = (parentUnit, list, edge, row, dir, side) => {
+      // dir -1: going backward from `edge`; +1: forward
+      let cur = edge;
+      list.forEach(c => {
+        const info = unitInfo(c);
+        const x = dir < 0 ? cur - GG - info.after : cur + GG + info.before;
+        const unit = unitAt(info, x, row, side, kids(c));
+        L.desc.push({ src: srcFor(parentUnit, c), to: unit.self });
+        cur = dir < 0 ? x - info.before : x + info.after;
+      });
+    };
+    const aI = unitInfo(aLine[0]), bI = unitInfo(bLine[0]);
+    let aU = placeRow(kUnit, aLine[0], mid - GG / 2 - aI.after, 1, 'A', aLine.length === 1);
+    let bU = placeRow(kUnit, bLine[0], mid + GG / 2 + bI.before, 1, 'B', bLine.length === 1);
+    const off0 = (KIDS.get(K) || []).filter(c => c !== aLine[0] && c !== bLine[0]);
+    const half = Math.ceil(off0.length / 2);
+    fanOut(kUnit, off0.slice(0, half).reverse(), aU.self.x - aI.before, 1, -1, 'A');
+    fanOut(kUnit, off0.slice(half), bU.self.x + bI.after, 1, 1, 'B');
+
+    // deeper rows: each line straight down, siblings outward
+    const descend = (line, firstUnit, side, dir) => {
+      let unit = firstUnit;
+      for (let j = 1; j < line.length; j++) {
+        const child = line[j], info = unitInfo(child);
+        const x = anchorOf(srcFor(unit, child));
+        const next = placeRow(unit, child, x, j + 1, side, j === line.length - 1);
+        const others = (KIDS.get(unit.self.u) || []).filter(c => c !== child);
+        fanOut(unit, dir < 0 ? others.slice().reverse() : others, dir < 0 ? x - info.before : x + info.after, j + 1, dir, side);
+        unit = next;
+      }
+    };
+    descend(aLine, aU, 'A', -1);
+    descend(bLine, bU, 'B', 1);
+
+    // pull the B side right only as far as needed to clear the A side on every row
+    let shift = 0;
+    const rows = new Set(L.nodes.filter(n => n.side === 'A' || n.side === 'B').map(n => n.y));
+    rows.forEach(y => {
+      const A = L.nodes.filter(n => n.side === 'A' && n.y === y), B = L.nodes.filter(n => n.side === 'B' && n.y === y);
+      if (!A.length || !B.length) return;
+      shift = Math.max(shift, Math.max(...A.map(n => n.x)) + CW + GG - Math.min(...B.map(n => n.x)));
+    });
+    if (shift > 0) L.nodes.forEach(n => { if (n.side === 'B') n.x += shift; });
+    return highlightPath(path, onPath);
+  }
+
+  const gp = g => (m, f) => g === 'f' ? f : g === 'm' ? m : m + '/' + f;
+  function ancestorWord(k, g) {
+    const p = gp(g);
+    if (k === 1) return p('אבא', 'אמא');
+    if (k === 2) return p('סבא', 'סבתא');
+    if (k === 3) return p('סבא רבא', 'סבתא רבתא');
+    return p('אב קדמון', 'אם קדמונית') + ` (${k} דורות)`;
+  }
+  function descWord(k, g) {
+    const p = gp(g);
+    if (k === 1) return p('בן', 'בת');
+    if (k === 2) return p('נכד', 'נכדה');
+    if (k === 3) return p('נין', 'נינה');
+    if (k === 4) return p('בן נין', 'בת נין');
+    return p('צאצא', 'צאצאית') + ` (${k} דורות)`;
+  }
+  function bloodName(bl, a, b) {
+    const g = M.get(b).g, { da, db, path } = bl, p = gp(g);
+    if (db === 0) return ancestorWord(da, g);
+    if (da === 0) return descWord(db, g);
+    if (da === 1 && db === 1) return p('אח', 'אחות') + (siblingsOf(a).full.includes(b) ? '' : ' למחצה');
+    if (db === 1) {
+      if (da === 2) return p('דוד', 'דודה');
+      if (da === 3) return p('דוד רבא', 'דודה רבתא');
+      return p('אח', 'אחות') + ' של ' + ancestorWord(da - 1, M.get(path[da - 1]).g);
+    }
+    if (da === 1) {
+      if (db === 2) return p('אחיין', 'אחיינית');
+      return descWord(db - 1, g) + ' של ' + (M.get(path[2]).g === 'f' ? 'אחות' : 'אח');
+    }
+    const d = Math.min(da, db) - 1, r = Math.abs(da - db);
+    const cousin = cg => {
+      const q = gp(cg);
+      const ord = { 2: q('שני', 'שנייה'), 3: q('שלישי', 'שלישית'), 4: q('רביעי', 'רביעית') }[d] || `מדרגה ${d}`;
+      return q('בן דוד', 'בת דודה') + (d > 1 ? ' ' + ord : '');
+    };
+    if (!r) return cousin(g);
+    // uneven generations: "בן דוד של אבא" / "בת של בן דוד"
+    if (da > db) return cousin(g) + ' של ' + ancestorWord(r, M.get(path[r]).g);
+    return descWord(r, g) + ' של ' + cousin(M.get(path[path.length - 1 - r]).g);
+  }
+  function inlawName(moves, a, b) {
+    const p = gp(M.get(b).g), ag = M.get(a).g;
+    switch (moves) {
+      case 'SU': return ag === 'f' ? p('חם', 'חמות') : p('חותן', 'חותנת');
+      case 'DS': return p('חתן', 'כלה');
+      case 'UDS': case 'SUD': return p('גיס', 'גיסה');
+      case 'SD': return p('בן חורג', 'בת חורגת');
+      case 'US': return p('אב חורג', 'אם חורגת');
+      default: return null;
+    }
+  }
+  function describe(res, a, b) {
+    const A = M.get(a), B = M.get(b);
+    const hu = B.g === 'f' ? 'היא' : 'הוא';
+    const bl = res.blood ? bloodName(res.blood, a, b) : null;
+    const sub = [];
+    let main;
+    if (A.spouses.includes(b)) {
+      main = `${B.name} ${hu} ${B.g === 'f' ? 'אשת' : B.g === 'm' ? 'בעל' : 'בן/בת הזוג של'} ${A.name}`;
+      if (bl) sub.push('וגם ' + bl);
+    } else if (res.kind === 'blood') {
+      main = `${B.name} ${hu} ${bl} של ${A.name}`;
+    } else {
+      const w = inlawName(res.moves, a, b);
+      const mv = res.moves, pure = /^U*D*$/;
+      const blOf = (path, moves) => ({ path, da: moves.split('U').length - 1, db: moves.split('D').length - 1 });
+      if (w) main = `${B.name} ${hu} ${w} של ${A.name}`;
+      else if (mv.endsWith('S') && pure.test(mv.slice(0, -1))) {
+        // B married X, a blood relative of A: "רחל היא אשתו של יוסף, נכד של שרה"
+        const X = res.path[res.path.length - 2];
+        const rel = bloodName(blOf(res.path.slice(0, -1), mv.slice(0, -1)), a, X);
+        const sp = B.g === 'f' ? 'אשתו' : B.g === 'm' ? 'בעלה' : 'בן/בת הזוג';
+        main = `${B.name} ${hu} ${sp} של ${M.get(X).name}, ${rel} של ${A.name}`;
+      } else if (mv.startsWith('S') && pure.test(mv.slice(1))) {
+        // B is a blood relative of A's spouse X
+        const X = res.path[1];
+        const rel = bloodName(blOf(res.path.slice(1), mv.slice(1)), X, b);
+        const sp = M.get(X).g === 'f' ? 'אשתו' : M.get(X).g === 'm' ? 'בעלה' : 'בן/בת הזוג';
+        main = `${B.name} ${hu} ${rel} של ${M.get(X).name} (${sp} של ${A.name})`;
+      } else main = `${A.name} ו${B.name} קשורים דרך נישואין`;
+      if (bl) sub.push('קשר דם רחוק: ' + bl);
+    }
+    const n = res.moves.length;
+    sub.unshift(`${n} ${n === 1 ? 'צעד' : 'צעדים'}`);
+    if (res.kind === 'blood' && res.da && res.db) {
+      const k = M.get(res.path[res.da]).name;
+      sub.push(res.partner ? `הורים משותפים: ${k} ו${M.get(res.partner).name}` : `אב/אם משותפים: ${k}`);
+    }
+    return { main, sub: sub.join(' · ') };
+  }
+
+  function showPath(a, b) {
+    if (a === b) return;
+    const res = findRelation(a, b);
+    if (!res) { toast(`לא נמצא קשר בין ${M.get(a).name} ל${M.get(b).name}`, 'err'); return; }
+    S.path = { a, b, res };
+    renderTree(true);
+    renderPathbar();
+    fit(true, 1.05);
+  }
+  function exitPath(rerender = true) {
+    if (!S.path) return;
+    S.path = null;
+    renderPathbar();
+    if (rerender) { renderTree(true); frame(true); }
+  }
+  function renderPathbar() {
+    const bar = $('#pathbar');
+    stage.classList.toggle('pathmode', !!S.path);
+    if (!S.path) { bar.hidden = true; return; }
+    const { a, b, res } = S.path;
+    const d = describe(res, a, b);
+    const stepWord = (mv, u) => {
+      const p = gp(M.get(u).g);
+      return mv === 'U' ? p('אב', 'אם') : mv === 'D' ? p('בן', 'בת') : p('בעל', 'אשה');
+    };
+    const chip = u => `<button class="chip" data-go="${u}">${avatar(M.get(u))}${esc(M.get(u).name)}</button>`;
+    bar.innerHTML = `
+      <div class="pb-top">
+        <span class="pb-ic"><i class="fas fa-route"></i></span>
+        <div class="pb-text"><b>${esc(d.main)}</b><div class="pb-sub">${esc(d.sub)}</div></div>
+        <button class="btn sm icon ghost" id="pbSwap" title="החלפת כיוון"><i class="fas fa-right-left"></i></button>
+        <button class="btn sm icon ghost" id="pbClose" title="חזרה לעץ (Esc)"><i class="fas fa-xmark"></i></button>
+      </div>
+      <div class="pb-chain">${res.path.map((u, i) => (i ? `<span class="pb-step">${stepWord(res.moves[i - 1], u)} ←</span>` : '') + chip(u)).join('')}</div>`;
+    bar.hidden = false;
+    $('#pbClose').onclick = () => exitPath();
+    $('#pbSwap').onclick = () => { S.focus = b; store.set('focus', b); renderPanel(); showPath(b, a); };
+  }
+  $('#pathbar').addEventListener('click', e => { const c = e.target.closest('[data-go]'); if (c) go(c.dataset.go); });
+
+  function openPathPicker() {
+    const ex = $('.menu'); if (ex) { ex.remove(); return; }
+    const m = M.get(S.focus);
+    const menu = document.createElement('div');
+    menu.className = 'menu relpick';
+    menu.innerHTML = `<div class="rp-h">איך ${esc(m.name)} קשור/ה ל…</div>
+      <div class="picker"><input placeholder="חיפוש אדם…" autocomplete="off" /><div class="results" hidden></div></div>`;
+    $('.p-actions').appendChild(menu);
+    const inp = $('input', menu);
+    bindCombo(inp, $('.results', menu), p => { menu.remove(); showPath(S.focus, p.uuid); }, { exclude: () => S.focus });
+    inp.focus();
+  }
+
+
+  // ---------------- Rendering ----------------
+  const nodeEls = new Map();
+  const nodesEl = $('#nodes'), wiresEl = $('#wires'), labelsEl = $('#labels');
+
+  function nodeHTML(n) {
+    const m = M.get(n.u);
+    const meta = years(m) || enName(m) || (m.hebrewNickname !== m.name ? m.hebrewNickname : '') || '';
+    let more = '';
+    if (n.hiddenKids) more += `<span class="more dn" title="ילדים נוספים">${n.hiddenKids} <i class="fas fa-caret-down"></i></span>`;
+    if (n.hiddenParents) more += `<span class="more up" title="דורות קודמים"><i class="fas fa-caret-up"></i></span>`;
+    return `${avatar(m)}<div class="tx"><div class="nm">${esc(m.name)}</div><div class="mt num">${esc(meta) || '&nbsp;'}</div></div>${more}`;
+  }
+
+  function renderTree(animate = true) {
+    if (!S.focus || !M.has(S.focus)) return;
+    S.path ? pathLayout() : layout();
+    const used = new Set();
+    L.nodes.forEach(n => {
+      let el = nodeEls.get(n.key);
+      const isNew = !el;
+      if (isNew) {
+        el = document.createElement('div');
+        el.dataset.key = n.key;
+        nodesEl.appendChild(el);
+        nodeEls.set(n.key, el);
+      }
+      el.dataset.u = n.u;
+      el.className = `nd ${gcls(M.get(n.u))} ${n.role === 'focus' ? 'focus' : ''} ${n.role === 'target' ? 'target' : ''} ${n.role === 'inlaw' || n.role === 'pspouse' ? 'dim' : ''} ${n.role === 'ctx' ? 'ctx' : ''}`;
+      el.innerHTML = nodeHTML(n);
+      el.title = M.get(n.u).name;
+      const t = `translate(${n.x - CW / 2}px, ${n.y}px)`;
+      if (isNew) {
+        el.style.transition = 'none';
+        el.style.transform = t;
+        el.classList.add('enter');
+        el.getBoundingClientRect();
+        el.style.transition = '';
+        requestAnimationFrame(() => el.classList.remove('enter'));
+      } else {
+        if (!animate) el.style.transition = 'none';
+        el.style.transform = t;
+        if (!animate) { el.getBoundingClientRect(); el.style.transition = ''; }
+      }
+      used.add(n.key);
+    });
+    nodeEls.forEach((el, k) => {
+      if (used.has(k)) return;
+      nodeEls.delete(k);
+      el.classList.add('out');
+      setTimeout(() => el.remove(), 320);
+    });
+    drawWires(animate);
+    drawLabels();
+    $('#upVal').textContent = S.up; $('#downVal').textContent = S.down;
+    $('[data-step="up:-1"]').disabled = S.up <= 0; $('[data-step="up:1"]').disabled = S.up >= 6;
+    $('[data-step="down:-1"]').disabled = S.down <= 0; $('[data-step="down:1"]').disabled = S.down >= 6;
+    $('#sibBtn').classList.toggle('on', S.sibs);
+  }
+
+  function elbow(sx, sy, tx, ty) {
+    const midY = ty - (ROW - CH) / 2;
+    if (Math.abs(sx - tx) < 1) return `M${sx} ${sy}V${ty}`;
+    const d = Math.sign(tx - sx), r = Math.min(10, Math.abs(tx - sx) / 2, (midY - sy) / 2);
+    return `M${sx} ${sy}V${midY - r}Q${sx} ${midY} ${sx + d * r} ${midY}H${tx - d * r}Q${tx} ${midY} ${tx} ${midY + r}V${ty}`;
+  }
+
+  function unionGeom(un) {
+    const { a, b, near } = un;
+    const y = a.y + CH / 2 + (un.far ? 9 : 0);
+    const [l, r] = a.x < b.x ? [a, b] : [b, a];
+    const x1 = l.x + CW / 2, x2 = r.x - CW / 2;
+    const [nl, nr] = near.x < b.x ? [near, b] : [b, near];
+    const ax = un.far ? (nl.x + CW / 2 + nr.x - CW / 2) / 2 : (x1 + x2) / 2;
+    return { x1, x2, y, ax };
+  }
+
+  function drawWires(animate) {
+    let p = '';
+    const hotSet = new Set();
+    L.unions.forEach(un => {
+      const g = unionGeom(un);
+      un.g = g;
+      const hot = un.hot ?? (L.allHot || un.a.role === 'focus' || un.b.role === 'focus' || (un.a.role === 'anc' && un.b.role === 'anc'));
+      p += `<path class="${hot ? 'hot' : ''}" d="M${g.x1} ${g.y}H${g.x2}"/>`;
+    });
+    L.desc.forEach(d => {
+      let sx, sy;
+      if (d.src.node) { sx = d.src.node.x; sy = d.src.node.y + CH; }
+      else { const g = d.src.g || unionGeom(d.src); sx = g.ax; sy = g.y; }
+      p += `<path class="${d.hot ? 'hot' : ''}" d="${elbow(sx, sy, d.to.x, d.to.y)}"/>`;
+    });
+    L.unions.forEach(un => {
+      const hot = un.hot ?? (L.allHot || un.a.role === 'focus' || un.b.role === 'focus');
+      p += `<circle class="${hot ? 'hot' : ''}" cx="${un.g.ax}" cy="${un.g.y}" r="3.5"/>`;
+    });
+    wiresEl.innerHTML = p;
+    wiresEl.classList.remove('fade');
+    if (animate) { wiresEl.getBoundingClientRect(); wiresEl.classList.add('fade'); }
+  }
+
+  const ROW_NAMES = {
+    '-6': 'דור 6 למעלה', '-5': 'דור 5 למעלה', '-4': 'דור 4 למעלה', '-3': 'הורי סבים', '-2': 'סבים', '-1': 'הורים',
+    '1': 'ילדים', '2': 'נכדים', '3': 'נינים', '4': 'בני נינים', '5': 'דור 5', '6': 'דור 6',
+  };
+  function drawLabels() {
+    if (S.path) { labelsEl.innerHTML = ''; return; }
+    const rows = [...new Set(L.nodes.map(n => Math.round(n.y / ROW)))];
+    const x = L.box.x1 + 22;
+    labelsEl.innerHTML = rows.filter(r => r !== 0).map(r =>
+      `<div class="rowlabel" style="left:${x}px;top:${r * ROW + CH / 2}px">${ROW_NAMES[r] || ''}</div>`).join('');
+  }
+
+  // ---------------- Camera ----------------
+  const stage = $('#stage'), world = $('#world');
+  function applyCam(anim = false) {
+    world.style.transition = anim ? 'transform .55s cubic-bezier(.2,.7,.2,1)' : 'none';
+    world.style.transform = `translate(${S.tx}px, ${S.ty}px) scale(${S.k})`;
+    $('#zVal').textContent = Math.round(S.k * 100) + '%';
+  }
+  function stageSize() { const r = stage.getBoundingClientRect(); return { w: r.width, h: r.height }; }
+  function centerOn(n, anim = true) {
+    const { w, h } = stageSize();
+    S.tx = w / 2 - n.x * S.k;
+    S.ty = h / 2 - (n.y + CH / 2) * S.k;
+    applyCam(anim);
+  }
+  function fit(anim = true, maxK = 1.15) {
+    if (!L) return;
+    const { w, h } = stageSize();
+    const pad = 70, top = 70;
+    // in path mode the relationship banner covers the bottom of the stage
+    const bot = S.path ? ($('#pathbar').offsetHeight || 110) + 40 : pad + 20;
+    const box = (S.path && L.hbox) || L.box;
+    const bw = box.x1 - box.x0 + (S.path ? 2 * (CW + GX) : 140), bh = box.y1 - box.y0;
+    S.k = Math.max(0.2, Math.min(maxK, (w - pad * 2) / bw, (h - top - bot) / bh));
+    S.tx = w / 2 - ((box.x0 + box.x1 + (S.path ? 0 : 70)) / 2) * S.k;
+    S.ty = top + (h - top - bot) / 2 - ((box.y0 + box.y1) / 2) * S.k;
+    applyCam(anim);
+  }
+  function zoomAt(cx, cy, f, anim = false) {
+    const r = stage.getBoundingClientRect();
+    const px = cx - r.left, py = cy - r.top;
+    const k2 = Math.max(0.2, Math.min(2.2, S.k * f));
+    S.tx = px - (px - S.tx) * (k2 / S.k);
+    S.ty = py - (py - S.ty) * (k2 / S.k);
+    S.k = k2;
+    applyCam(anim);
+  }
+  // Pick a camera after a refocus: fit when it fits comfortably, otherwise follow the focus.
+  function frame(anim) {
+    if (S.path) { fit(anim, 1.05); return; }
+    const { w, h } = stageSize();
+    const bw = L.box.x1 - L.box.x0 + 140, bh = L.box.y1 - L.box.y0;
+    const kFit = Math.min((w - 140) / bw, (h - 160) / bh);
+    if (kFit >= 0.7) fit(anim, 1.05);
+    else { S.k = Math.max(0.7, Math.min(S.k, 1)); centerOn(L.focusNode, anim); }
+  }
+
+  // pan / pinch / wheel
+  const ptrs = new Map();
+  let drag = null, moved = false;
+  stage.addEventListener('pointerdown', e => {
+    if (e.target.closest('.tools, .trail, .pathbar')) return;
+    ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    moved = false;
+    if (ptrs.size === 1) drag = { x: e.clientX, y: e.clientY, tx: S.tx, ty: S.ty };
+    if (ptrs.size === 2) {
+      const [a, b] = [...ptrs.values()];
+      drag = { pinch: Math.hypot(a.x - b.x, a.y - b.y), k: S.k, cx: (a.x + b.x) / 2, cy: (a.y + b.y) / 2 };
+    }
+  });
+  stage.addEventListener('pointermove', e => {
+    if (!ptrs.has(e.pointerId) || !drag) return;
+    ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (drag.pinch && ptrs.size === 2) {
+      const [a, b] = [...ptrs.values()];
+      const d = Math.hypot(a.x - b.x, a.y - b.y);
+      zoomAt(drag.cx, drag.cy, (drag.k * d / drag.pinch) / S.k);
+      moved = true;
+      return;
+    }
+    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    if (!moved && Math.hypot(dx, dy) < 5) return;
+    if (!moved) { moved = true; stage.classList.add('dragging'); try { stage.setPointerCapture(e.pointerId); } catch {} }
+    S.tx = drag.tx + dx; S.ty = drag.ty + dy;
+    applyCam(false);
+  });
+  const endPtr = e => {
+    ptrs.delete(e.pointerId);
+    if (ptrs.size === 0) { drag = null; stage.classList.remove('dragging'); }
+    else if (ptrs.size === 1) { const [p] = [...ptrs.values()]; drag = { x: p.x, y: p.y, tx: S.tx, ty: S.ty }; }
+  };
+  stage.addEventListener('pointerup', endPtr);
+  stage.addEventListener('pointercancel', endPtr);
+  stage.addEventListener('wheel', e => {
+    e.preventDefault();
+    if (!e.ctrlKey && e.deltaMode === 0 && Math.abs(e.deltaX) > Math.abs(e.deltaY)) { S.tx -= e.deltaX; applyCam(false); return; }
+    zoomAt(e.clientX, e.clientY, Math.exp(-e.deltaY * (e.ctrlKey ? 0.01 : 0.0016)));
+  }, { passive: false });
+
+  nodesEl.addEventListener('click', e => {
+    if (moved) return;
+    const el = e.target.closest('.nd');
+    if (el) { if (!isPhone()) setCollapsed(false); go(el.dataset.u); }
+  });
+  // a click on empty canvas (not a drag) tucks the details panel away
+  stage.addEventListener('click', e => {
+    // composedPath, not target.closest: a click re-renders the card/chip, detaching e.target
+    if (moved || e.composedPath().some(n => n.matches && n.matches('.nd, .tools, .trail, .reopen, .pathbar'))) return;
+    setCollapsed(true);
+  });
+  $('#reopen').onclick = () => setCollapsed(false);
+
+  const isPhone = () => matchMedia('(max-width: 820px)').matches;
+  function setCollapsed(c) {
+    if (isPhone()) {
+      if (c && S.panelOpen) { S.panelOpen = false; panel.classList.remove('open'); }
+      return;
+    }
+    if (S.collapsed === c) return;
+    const r0 = stage.getBoundingClientRect();
+    S.collapsed = c;
+    store.set('collapsed', c);
+    panel.classList.toggle('collapsed', c);
+    updateReopen();
+    const r1 = stage.getBoundingClientRect();
+    // keep the picture still while the stage resizes, then glide to the new centre
+    S.tx += r0.left - r1.left;
+    applyCam(false);
+    world.getBoundingClientRect();
+    S.tx += (r1.width - r0.width) / 2;
+    applyCam(true);
+  }
+  function updateReopen() {
+    const b = $('#reopen');
+    b.hidden = !S.collapsed || isPhone() || !S.focus;
+    if (!b.hidden) { const m = M.get(S.focus); b.innerHTML = `${avatar(m)}${esc(m.name)}<i class="fas fa-angles-right"></i>`; }
+  }
+
+  $('#zIn').onclick = () => { const r = stage.getBoundingClientRect(); zoomAt(r.left + r.width / 2, r.top + r.height / 2, 1.25, true); };
+  $('#zOut').onclick = () => { const r = stage.getBoundingClientRect(); zoomAt(r.left + r.width / 2, r.top + r.height / 2, 0.8, true); };
+  $('#zFit').onclick = () => fit(true);
+  $('#zCenter').onclick = () => L && centerOn(L.focusNode, true);
+  $$('[data-step]').forEach(b => b.onclick = () => {
+    const [k, d] = b.dataset.step.split(':');
+    S[k] = Math.max(0, Math.min(6, S[k] + +d));
+    store.set(k, S[k]);
+    renderTree(); frame(true);
+  });
+  $('#sibBtn').onclick = () => { S.sibs = !S.sibs; store.set('sibs', S.sibs); renderTree(); frame(true); };
+  window.addEventListener('resize', () => { updateReopen(); if (L && S.view === 'tree') frame(false); });
+
+  // ---------------- Navigation ----------------
+  function go(u, { push = true, anim = true } = {}) {
+    if (!M.has(u)) return;
+    exitPath(false);
+    const changed = S.focus !== u;
+    S.focus = u;
+    store.set('focus', u);
+    S.recent = [u, ...S.recent.filter(x => x !== u)].slice(0, 8);
+    store.set('recent', S.recent);
+    if (push && location.hash !== '#p=' + u) history.pushState(null, '', '#p=' + u);
+    if (S.view !== 'tree') setView('tree');
+    renderTree(anim && changed);
+    frame(anim);
+    renderPanel();
+    renderTrail();
+  }
+  window.addEventListener('popstate', () => {
+    const u = (location.hash.match(/p=([\w-]+)/) || [])[1];
+    if (u && M.has(u)) go(u, { push: false });
+  });
+
+  function renderTrail() {
+    const items = S.recent.filter(u => u !== S.focus).slice(0, 6);
+    $('#trail').innerHTML = items.length ? `<span class="t-l">נצפו לאחרונה</span>` + items.map(u => {
+      const m = M.get(u);
+      return `<button class="chip" data-go="${u}">${avatar(m)}${esc(m.name)}</button>`;
+    }).join('') : '';
+  }
+  $('#trail').addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (b) go(b.dataset.go); });
+
+  document.addEventListener('keydown', e => {
+    const typing = /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName);
+    if (e.key === '/' && !typing) { e.preventDefault(); $('#q').focus(); return; }
+    if (e.key === 'Escape') { closeMenus(); if (S.path && !$('.scrim')) exitPath(); }
+    if (typing || S.view !== 'tree' || !S.focus || $('.scrim')) return;
+    const m = M.get(S.focus);
+    if (e.key === 'ArrowUp') { const p = m.father || m.mother; if (p) { e.preventDefault(); go(p); } }
+    else if (e.key === 'ArrowDown') { const c = (KIDS.get(S.focus) || [])[0]; if (c) { e.preventDefault(); go(c); } }
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+      const all = [...siblingsOf(S.focus).full, S.focus].sort(byAge);
+      const i = all.indexOf(S.focus) + (e.key === 'ArrowLeft' ? 1 : -1);  // RTL: left = younger
+      if (all[i]) { e.preventDefault(); go(all[i]); }
+    }
+  });
+
+  // ---------------- Profile panel ----------------
+  const panel = $('#panel');
+  const fmtDate = s => {
+    const m = /^(\d{3,4})-(\d{2})-(\d{2})/.exec(s || '');
+    if (!m) return s;
+    const months = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'];
+    return `${+m[3]} ב${months[+m[2] - 1]} ${m[1]}`;
+  };
+  function relRow(u, note = '') {
+    const m = M.get(u);
+    const meta = [years(m), note].filter(Boolean).join(' · ');
+    return `<button class="rel" data-go="${u}">${avatar(m, 'sm')}<span class="tx"><span class="nm" style="display:block">${esc(m.name)}</span>${meta ? `<span class="mt num">${esc(meta)}</span>` : ''}</span><i class="fas fa-chevron-left go"></i></button>`;
+  }
+  // Descendants per generation (breadth-first, so someone reachable two ways
+  // through a cousin marriage is counted once, at the nearest generation).
+  function descStats(u) {
+    const gens = [], seen = new Set([u]);
+    let cur = [u];
+    while (cur.length) {
+      const next = [];
+      cur.forEach(x => (KIDS.get(x) || []).forEach(c => { if (!seen.has(c)) { seen.add(c); next.push(c); } }));
+      if (!next.length) break;
+      gens.push(next.length);
+      cur = next;
+    }
+    return { gens, total: seen.size - 1 };
+  }
+  function statsHTML(u) {
+    const { gens, total } = descStats(u);
+    if (!total) return '';
+    const tile = (v, l, cls = '') => `<div class="stat ${cls}"><b class="num">${v}</b><span>${l}</span></div>`;
+    const note = gens.length > 3 ? `<div class="stat-note">לאורך ${gens.length} דורות${gens[3] ? ` · ${gens[3]} בני נינים` : ''}</div>` : '';
+    return `<div class="sec"><h3>צאצאים</h3><div class="stat-grid">
+      ${tile(gens[0] || 0, 'ילדים')}${tile(gens[1] || 0, 'נכדים')}${tile(gens[2] || 0, 'נינים')}${tile(total, 'סה״כ', 'total')}
+    </div>${note}</div>`;
+  }
+
+  function renderPanel() {
+    const m = M.get(S.focus);
+    if (!m) { panel.innerHTML = ''; return; }
+    const age = ageOf(m);
+    const g = m.g === 'm' ? 'זכר' : m.g === 'f' ? 'נקבה' : 'מין לא ידוע';
+    const tags = [
+      `<span class="tag g ${gcls(m)}"><i class="fas ${m.g === 'f' ? 'fa-venus' : m.g === 'm' ? 'fa-mars' : 'fa-genderless'}"></i>${g}</span>`,
+      years(m) ? `<span class="tag num"><i class="far fa-calendar"></i>${esc(years(m))}</span>` : '',
+      age != null ? (isLiving(m) ? `<span class="tag live num">${m.g === 'f' ? 'בת' : m.g === 'm' ? 'בן' : 'בן/בת'} ${age}</span>` : `<span class="tag num">${m.g === 'f' ? 'נפטרה' : m.g === 'm' ? 'נפטר' : 'נפטר/ה'} בגיל ${age}</span>`) : '',
+    ].join('');
+
+    const facts = [];
+    const add = (k, v) => v != null && v !== '' && facts.push(`<dt>${k}</dt><dd>${v}</dd>`);
+    if (m.birthdate) add('לידה', esc(fmtDate(m.birthdate)) + (m.afterShkia != null ? ` <span style="color:var(--muted);font-weight:400">(${m.afterShkia ? 'אחרי השקיעה' : 'לפני השקיעה'})</span>` : ''));
+    else if (m.born != null) add('שנת לידה', `<span class="num">${m.born}</span>`);
+    if (m.passedDate) add('פטירה', esc(fmtDate(m.passedDate)));
+    else if (m.passed != null) add('שנת פטירה', `<span class="num">${m.passed}</span>`);
+    if (m.hebrewNickname && m.hebrewNickname !== m.name) add('כינוי', esc(m.hebrewNickname));
+    if (m.hebrewSurname) add('שם משפחה', esc(m.hebrewSurname));
+    if (enName(m)) add('שם לועזי', `<span class="ltr">${esc(enName(m))}</span>`);
+    if (m.calendarName) add('שם ביומן', `<span class="ltr">${esc(m.calendarName)}</span>`);
+
+    const parents = [m.father, m.mother].filter(Boolean);
+    const { full, half } = siblingsOf(S.focus);
+    const partners = partnersOf(S.focus);
+    const kids = KIDS.get(S.focus) || [];
+    const kidGroups = partners.map(p => ({ p, ks: kidsWith(S.focus, p) })).filter(x => x.ks.length);
+    const orphanKids = kidsWith(S.focus, null);
+    if (orphanKids.length) kidGroups.push({ p: null, ks: orphanKids });
+
+    const sec = (title, n, body) => `<div class="sec"><h3>${title}${n != null ? ` <span class="cnt num">${n}</span>` : ''}</h3>${body}</div>`;
+    const list = us => us.map(u => relRow(u)).join('');
+
+    panel.innerHTML = `
+      <div class="p-grab"></div>
+      <div class="p-head" id="pHead">
+        <button class="btn ghost sm icon p-collapse" id="pCollapse" title="כיווץ הפאנל"><i class="fas fa-angles-left"></i></button>
+        ${avatar(m, 'lg')}
+        <div class="who">
+          <div class="p-name">${esc(m.name)}</div>
+          ${enName(m) ? `<div class="p-en ltr">${esc(enName(m))}</div>` : ''}
+          <div class="tags">${tags}</div>
+        </div>
+      </div>
+      <div class="p-scroll">
+        <div class="p-actions">
+          <button class="btn" id="pEdit"><i class="fas fa-pen"></i>עריכה</button>
+          <button class="btn" id="pAddRel"><i class="fas fa-user-plus"></i>הוספת קרוב</button>
+          <button class="btn" id="pPath" title="איך שני אנשים קשורים?"><i class="fas fa-route"></i>קשר</button>
+          <button class="btn icon" id="pLink" title="העתקת קישור"><i class="fas fa-link"></i></button>
+        </div>
+        ${statsHTML(S.focus)}
+        ${facts.length ? sec('פרטים', null, `<dl class="facts">${facts.join('')}</dl>`) : ''}
+        ${m.notes ? sec('הערות', null, `<div class="notes" dir="auto">${esc(m.notes)}</div>`) : ''}
+        ${sec('הורים', parents.length, parents.length ? list(parents) : '<div class="empty-rel">לא ידועים</div>')}
+        ${partners.length ? sec(partners.length > 1 ? 'בני זוג' : 'בן/בת זוג', partners.length, list(partners)) : ''}
+        ${full.length || half.length ? sec('אחים ואחיות', full.length + half.length,
+          list(full) + (half.length ? `<div class="rel-sub">אחים למחצה</div>` + half.map(u => {
+            const o = M.get(u); const shared = o.father && o.father === m.father ? 'מצד האב' : 'מצד האם';
+            return relRow(u, shared);
+          }).join('') : '')) : ''}
+        ${kids.length ? sec('ילדים', kids.length, kidGroups.map(gr =>
+          (kidGroups.length > 1 ? `<div class="rel-sub">${gr.p ? 'עם ' + esc(M.get(gr.p).name) : 'הורה נוסף לא ידוע'}</div>` : '') + list(gr.ks)).join('')) : ''}
+      </div>`;
+    panel.classList.toggle('open', S.panelOpen);
+    panel.classList.toggle('collapsed', S.collapsed);
+    updateReopen();
+    $('#pCollapse').onclick = e => { e.stopPropagation(); setCollapsed(true); };
+    document.documentElement.style.setProperty('--sheet-peek', '76px');
+    $('#pEdit').onclick = () => openForm({ mode: 'edit', uuid: S.focus });
+    $('#pAddRel').onclick = e => { e.stopPropagation(); toggleRelMenu(); };
+    $('#pPath').onclick = e => { e.stopPropagation(); openPathPicker(); };
+    $('#pLink').onclick = async () => {
+      const url = location.origin + location.pathname + '#p=' + S.focus;
+      try { await navigator.clipboard.writeText(url); toast('הקישור הועתק', 'ok'); } catch { toast(url); }
+    };
+    $('#pHead').onclick = () => { if (matchMedia('(max-width: 820px)').matches) { S.panelOpen = !S.panelOpen; panel.classList.toggle('open', S.panelOpen); } };
+  }
+  panel.addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (b) go(b.dataset.go); });
+
+  function closeMenus() { $$('.menu').forEach(x => x.remove()); $('#qResults').hidden = true; }
+  document.addEventListener('click', e => { if (!e.target.closest('.menu, #pAddRel, #pPath')) $$('.menu').forEach(x => x.remove()); if (!e.target.closest('#searchBox')) $('#qResults').hidden = true; });
+
+  function toggleRelMenu() {
+    const ex = $('.menu'); if (ex) { ex.remove(); return; }
+    const m = M.get(S.focus);
+    const opts = [
+      !m.father && ['father', 'fa-person', 'אב'],
+      !m.mother && ['mother', 'fa-person-dress', 'אם'],
+      ['spouse', 'fa-ring', 'בן/בת זוג'],
+      ['child', 'fa-child', 'ילד/ה'],
+      (m.father || m.mother) && ['sibling', 'fa-people-arrows', 'אח/אחות'],
+    ].filter(Boolean);
+    const menu = document.createElement('div');
+    menu.className = 'menu';
+    menu.innerHTML = opts.map(([k, i, t]) => `<button data-rel="${k}"><i class="fas ${i}"></i>${t}</button>`).join('');
+    $('.p-actions').appendChild(menu);
+    menu.onclick = e => { const b = e.target.closest('[data-rel]'); if (b) { menu.remove(); openForm({ mode: 'add', rel: b.dataset.rel, of: S.focus }); } };
+  }
+
+  // ---------------- Search ----------------
+  function searchPeople(q, limit = 8, exclude = null) {
+    const forms = queryForms(q);
+    if (!forms.length) return [];
+    const out = [];
+    M.forEach(m => {
+      if (m.uuid === exclude) return;
+      const nm = norm(m.name);
+      let best = Infinity;
+      forms.forEach((n, fi) => {
+        const i = m.idx.indexOf(n);
+        if (i < 0) return;
+        // the query as typed outranks its other-keyboard reading
+        const score = (nm.startsWith(n) ? 0 : (i === 0 || m.idx[i - 1] === ' ') ? 1 : 2) + (fi ? 0.5 : 0);
+        best = Math.min(best, score);
+      });
+      if (best < Infinity) out.push([best, nm.length, m]);
+    });
+    return out.sort((a, b) => a[0] - b[0] || a[1] - b[1]).slice(0, limit).map(x => x[2]);
+  }
+  function resHTML(m, i, active) {
+    const meta = parentsLine(m) || enName(m);
+    return `<button class="res ${i === active ? 'on' : ''}" data-u="${m.uuid}" type="button">${avatar(m, 'sm')}<span style="min-width:0"><div class="nm">${esc(m.name)}</div>${meta ? `<div class="mt">${esc(meta)}</div>` : ''}</span><span class="yr num">${esc(years(m))}</span></button>`;
+  }
+  function bindCombo(input, box, onPick, { exclude = () => null, allowNew = false } = {}) {
+    let items = [], active = 0;
+    const draw = () => {
+      const q = input.value;
+      items = searchPeople(q, 8, exclude());
+      if (!q.trim()) { box.hidden = true; return; }
+      box.innerHTML = items.length ? items.map((m, i) => resHTML(m, i, active)).join('')
+        : `<div class="res-empty">${allowNew ? `לא נמצא — ייווצר אדם חדש בשם "${esc(q.trim())}"` : 'לא נמצאו תוצאות'}</div>`;
+      box.hidden = false;
+    };
+    input.addEventListener('input', () => { active = 0; draw(); });
+    input.addEventListener('focus', () => { if (input.value.trim()) draw(); });
+    input.addEventListener('keydown', e => {
+      if (box.hidden) return;
+      if (e.key === 'ArrowDown') { e.preventDefault(); active = Math.min(items.length - 1, active + 1); draw(); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); active = Math.max(0, active - 1); draw(); }
+      else if (e.key === 'Enter' && items[active]) { e.preventDefault(); box.hidden = true; onPick(items[active]); }
+      else if (e.key === 'Escape') { box.hidden = true; }
+    });
+    box.addEventListener('mousedown', e => e.preventDefault());
+    box.addEventListener('click', e => { const b = e.target.closest('[data-u]'); if (b) { box.hidden = true; onPick(M.get(b.dataset.u)); } });
+    input.addEventListener('blur', () => setTimeout(() => (box.hidden = true), 120));
+  }
+  bindCombo($('#q'), $('#qResults'), m => { $('#q').value = ''; $('#q').blur(); go(m.uuid); });
+
+  // ---------------- Views ----------------
+  function setView(v) {
+    S.view = v;
+    $$('.seg [data-view]').forEach(b => b.classList.toggle('active', b.dataset.view === v));
+    $('#viewTree').hidden = v !== 'tree';
+    $('#viewPeople').hidden = v !== 'people';
+    if (v === 'people') renderPeople();
+    else if (L) requestAnimationFrame(() => frame(false));
+  }
+  $$('.seg [data-view]').forEach(b => b.onclick = () => setView(b.dataset.view));
+
+  const P = { q: '', g: '', sort: 'family' };
+  $('#pq').addEventListener('input', e => { P.q = e.target.value; renderPeople(); });
+  $('#pSort').addEventListener('change', e => { P.sort = e.target.value; renderPeople(); });
+  $$('#pGender button').forEach(b => b.onclick = () => { P.g = b.dataset.g; $$('#pGender button').forEach(x => x.classList.toggle('active', x === b)); renderPeople(); });
+
+  function renderPeople() {
+    const all = [...M.values()];
+    const living = all.filter(isLiving).length;
+    const fams = new Set(all.map(m => m.hebrewSurname).filter(Boolean)).size;
+    $('#kpis').innerHTML = [
+      [all.length, 'אנשים'], [countGenerations(), 'דורות'], [fams, 'משפחות'], [living, 'בחיים'],
+    ].map(([v, l]) => `<div class="kpi"><b class="num">${v}</b><span>${l}</span></div>`).join('');
+
+    const forms = queryForms(P.q);
+    let list = all.filter(m => matchesQuery(m, forms) && (!P.g || m.g === P.g));
+    const card = m => {
+      const meta = parentsLine(m) || enName(m) || (m.spouses.length ? 'נשוי/אה ל' + M.get(m.spouses[0]).name : '');
+      return `<button class="pc" data-go="${m.uuid}">${avatar(m)}<span class="tx"><div class="nm">${esc(m.name)}</div><div class="mt">${esc(meta) || '&nbsp;'}</div></span><span class="yr num">${esc(years(m))}</span></button>`;
+    };
+    const heb = (a, b) => a.name.localeCompare(b.name, 'he');
+    let groups;
+    if (P.sort === 'family') {
+      const by = new Map();
+      list.forEach(m => { const k = m.hebrewSurname || 'ללא שם משפחה'; if (!by.has(k)) by.set(k, []); by.get(k).push(m); });
+      groups = [...by.entries()].sort((a, b) => (a[0] === 'ללא שם משפחה') - (b[0] === 'ללא שם משפחה') || b[1].length - a[1].length)
+        .map(([k, v]) => [k, v.sort((a, b) => byAge(a.uuid, b.uuid) || heb(a, b))]);
+    } else if (P.sort === 'name') {
+      groups = [['', list.sort(heb)]];
+    } else {
+      groups = [['', list.sort((a, b) => byAge(a.uuid, b.uuid) || heb(a, b))]];
+    }
+    $('#plist').innerHTML = list.length ? groups.map(([k, v]) =>
+      `<div class="grp">${k ? `<div class="grp-h"><h3>${esc(k)}</h3><span class="num">${v.length}</span></div>` : ''}<div class="grid">${v.map(card).join('')}</div></div>`).join('')
+      : `<div class="none">לא נמצאו אנשים</div>`;
+  }
+  $('#plist').addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (b) go(b.dataset.go); });
+
+  // ---------------- Add / edit form ----------------
+  $('#addBtn').onclick = () => openForm({ mode: 'add' });
+
+  function openForm({ mode, uuid, rel, of }) {
+    const m = mode === 'edit' ? M.get(uuid) : {};
+    const base = of ? M.get(of) : null;
+    let title = mode === 'edit' ? 'עריכת ' + m.name : 'הוספת אדם';
+    const pre = { father: m.father || null, mother: m.mother || null, spouses: [...(m.spouses || [])], gender: m.gender || '' };
+    if (rel && base) {
+      const relName = { father: 'אב', mother: 'אם', spouse: 'בן/בת זוג', child: 'ילד/ה', sibling: 'אח/אחות' }[rel];
+      title = `הוספת ${relName} ל${base.name}`;
+      if (rel === 'father') { pre.gender = 'male'; if (base.mother) pre.spouses = [base.mother]; }
+      if (rel === 'mother') { pre.gender = 'female'; if (base.father) pre.spouses = [base.father]; }
+      if (rel === 'spouse') { pre.spouses = [base.uuid]; pre.gender = base.g === 'm' ? 'female' : base.g === 'f' ? 'male' : ''; }
+      if (rel === 'child') {
+        const sp = partnersOf(base.uuid);
+        if (base.g === 'f') { pre.mother = base.uuid; if (sp.length === 1) pre.father = sp[0]; }
+        else { pre.father = base.uuid; if (sp.length === 1) pre.mother = sp[0]; }
+      }
+      if (rel === 'sibling') { pre.father = base.father; pre.mother = base.mother; }
+    }
+
+    const v = k => esc(m[k] ?? '');
+    const scrim = document.createElement('div');
+    scrim.className = 'scrim';
+    scrim.innerHTML = `
+      <form class="modal" novalidate>
+        <div class="modal-head"><h2>${esc(title)}</h2><button type="button" class="btn ghost icon" data-x><i class="fas fa-xmark"></i></button></div>
+        <div class="modal-body">
+          <div class="fs">
+            <div class="row" style="grid-template-columns: 2fr 1fr">
+              <div class="f"><label>שם מלא <span class="req">*</span></label><input name="name" value="${v('name')}" required /></div>
+              <div class="f"><label>מין</label><select name="gender">
+                <option value="">אוטומטי</option><option value="male">זכר</option><option value="female">נקבה</option></select></div>
+            </div>
+          </div>
+          <div class="fs"><h4>קשרי משפחה</h4>
+            <div class="row">
+              <div class="f"><label>אב</label><div class="picker" data-pick="father"><input placeholder="חיפוש או שם חדש…" autocomplete="off" /><button type="button" class="clr"><i class="fas fa-xmark"></i></button><div class="results" hidden></div></div></div>
+              <div class="f"><label>אם</label><div class="picker" data-pick="mother"><input placeholder="חיפוש או שם חדש…" autocomplete="off" /><button type="button" class="clr"><i class="fas fa-xmark"></i></button><div class="results" hidden></div></div></div>
+            </div>
+            <div class="f"><label>בני זוג</label><div class="chips" id="spChips"></div>
+              <div class="picker" data-pick="spouse"><input placeholder="הוספת בן/בת זוג…" autocomplete="off" /><div class="results" hidden></div></div>
+              ${mode === 'edit' ? '<div class="help">לא ניתן להסיר הורה קיים מכאן — רק להחליף.</div>' : ''}
+            </div>
+          </div>
+          <div class="fs"><h4>תאריכים</h4>
+            <div class="row">
+              <div class="f"><label>תאריך לידה</label><input type="date" name="birthdate" value="${v('birthdate')}" min="0001-01-01" /></div>
+              <div class="f"><label>תאריך פטירה</label><input type="date" name="passedDate" value="${v('passedDate')}" /></div>
+              <div class="f"><label>שעת לידה</label><select name="afterShkia"><option value="">—</option><option value="false">לפני השקיעה</option><option value="true">אחרי השקיעה</option></select></div>
+            </div>
+            <div class="row">
+              <div class="f"><label>שנת לידה</label><input type="number" name="born" value="${v('born')}" inputmode="numeric" /><div class="help">לדמויות קדומות (לבריאת העולם)</div></div>
+              <div class="f"><label>שנת פטירה</label><input type="number" name="passed" value="${v('passed')}" inputmode="numeric" /></div>
+            </div>
+          </div>
+          <div class="fs"><h4>שמות נוספים</h4>
+            <div class="row">
+              <div class="f"><label>כינוי עברי</label><input name="hebrewNickname" value="${v('hebrewNickname')}" /></div>
+              <div class="f"><label>שם משפחה</label><input name="hebrewSurname" value="${v('hebrewSurname')}" /></div>
+            </div>
+            <div class="row">
+              <div class="f"><label>First name</label><input name="englishNickname" value="${v('englishNickname')}" dir="ltr" /></div>
+              <div class="f"><label>Surname</label><input name="englishSurname" value="${v('englishSurname')}" dir="ltr" /></div>
+              <div class="f"><label>שם ביומן</label><input name="calendarName" value="${v('calendarName')}" dir="ltr" /></div>
+            </div>
+          </div>
+          <div class="fs"><h4>הערות</h4>
+            <div class="f"><textarea name="notes" rows="4">${v('notes')}</textarea></div>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button type="button" class="btn" data-x>ביטול</button>
+          <button type="submit" class="btn primary"><i class="fas fa-check"></i>${mode === 'edit' ? 'שמירת שינויים' : 'הוספה'}</button>
+        </div>
+      </form>`;
+    document.body.appendChild(scrim);
+    const form = $('form', scrim);
+    form.gender.value = pre.gender || '';
+    form.afterShkia.value = m.afterShkia == null ? '' : String(m.afterShkia);
+    const close = () => scrim.remove();
+    $$('[data-x]', scrim).forEach(b => b.onclick = close);
+    scrim.addEventListener('mousedown', e => { if (e.target === scrim) close(); });
+    scrim.addEventListener('keydown', e => { if (e.key === 'Escape') { e.stopPropagation(); close(); } });
+
+    // parent pickers
+    const picks = {};
+    ['father', 'mother'].forEach(k => {
+      const wrap = $(`[data-pick="${k}"]`, scrim), inp = $('input', wrap);
+      const set = u => { picks[k] = u; wrap.classList.toggle('linked', !!u); inp.value = u ? M.get(u).name : inp.value; };
+      if (pre[k]) set(pre[k]);
+      inp.addEventListener('input', () => { if (picks[k]) { picks[k] = null; wrap.classList.remove('linked'); } });
+      $('.clr', wrap).onclick = () => { picks[k] = null; inp.value = ''; wrap.classList.remove('linked'); inp.focus(); };
+      bindCombo(inp, $('.results', wrap), p => set(p.uuid), { exclude: () => uuid, allowNew: true });
+    });
+    // spouse chips
+    const spouses = [...pre.spouses];
+    const drawChips = () => {
+      $('#spChips', scrim).innerHTML = spouses.map((s, i) => {
+        const sm = M.get(s);
+        return `<span class="chip">${sm ? avatar(sm) : '<span class="av g-u">+</span>'}${esc(sm ? sm.name : s)}${sm ? '' : ' <em style="color:var(--muted);font-style:normal">(חדש)</em>'}<button type="button" data-rm="${i}"><i class="fas fa-xmark"></i></button></span>`;
+      }).join('');
+    };
+    drawChips();
+    $('#spChips', scrim).onclick = e => { const b = e.target.closest('[data-rm]'); if (b) { spouses.splice(+b.dataset.rm, 1); drawChips(); } };
+    const spWrap = $('[data-pick="spouse"]', scrim), spIn = $('input', spWrap);
+    bindCombo(spIn, $('.results', spWrap), p => { if (!spouses.includes(p.uuid)) spouses.push(p.uuid); spIn.value = ''; drawChips(); }, { exclude: () => uuid, allowNew: true });
+    spIn.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && spIn.value.trim() && $('.results', spWrap).querySelector('.res-empty')) {
+        e.preventDefault(); spouses.push(spIn.value.trim()); spIn.value = ''; $('.results', spWrap).hidden = true; drawChips();
+      }
+    });
+
+    setTimeout(() => form.name.focus(), 50);
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const name = form.name.value.trim();
+      if (!name) { form.name.focus(); toast('יש להזין שם', 'err'); return; }
+      const parentVal = k => picks[k] || $(`[data-pick="${k}"] input`, scrim).value.trim() || undefined;
+      const num = k => form[k].value === '' ? undefined : parseInt(form[k].value, 10);
+      const txt = k => form[k].value.trim() || undefined;
+      const data = {
+        name, gender: form.gender.value,
+        father: parentVal('father'), mother: parentVal('mother'),
+        spouses,
+        born: num('born'), passed: num('passed'),
+        birthdate: txt('birthdate'), passedDate: txt('passedDate'),
+        afterShkia: form.afterShkia.value === '' ? undefined : form.afterShkia.value === 'true',
+        hebrewNickname: txt('hebrewNickname'), hebrewSurname: txt('hebrewSurname'),
+        englishNickname: txt('englishNickname'), englishSurname: txt('englishSurname'),
+        calendarName: txt('calendarName'),
+        notes: mode === 'edit' ? form.notes.value.trim() : txt('notes'),
+      };
+      Object.keys(data).forEach(k => data[k] === undefined && delete data[k]);
+      if (mode === 'add' && !data.gender) delete data.gender;
+      if (mode === 'edit' && data.father === m.father) delete data.father;
+      if (mode === 'edit' && data.mother === m.mother) delete data.mother;
+
+      const btn = $('[type=submit]', form);
+      btn.disabled = true; btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>שומר…';
+      try {
+        let target = uuid;
+        if (mode === 'edit') {
+          await api('PUT', '/members/' + uuid, data);
+        } else {
+          target = await api('POST', '/members', data);
+          if (rel === 'father' || rel === 'mother') await api('PUT', '/members/' + of, { [rel]: target });
+        }
+        close();
+        await loadData();
+        toast(mode === 'edit' ? 'השינויים נשמרו' : `${name} נוסף/ה לעץ`, 'ok');
+        const next = rel && of ? of : target;
+        if (typeof next === 'string' && M.has(next)) go(next, { push: next !== S.focus });
+        else renderTree();
+        if (S.view === 'people') renderPeople();
+      } catch (err) {
+        console.error(err);
+        toast('השמירה נכשלה', 'err');
+        btn.disabled = false; btn.innerHTML = '<i class="fas fa-check"></i>נסה שוב';
+      }
+    });
+  }
+
+  async function api(method, path, body) {
+    const r = await fetch(API + path, {
+      method,
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + TOKEN },
+      body: JSON.stringify(body),
+    });
+    if (!r.ok) throw new Error(method + ' ' + path + ' → ' + r.status + ' ' + await r.text());
+    const t = await r.text();
+    try { return JSON.parse(t); } catch { return t; }
+  }
+
+  function toast(msg, type = '') {
+    const t = document.createElement('div');
+    t.className = 'toast ' + type;
+    t.innerHTML = `<i class="fas ${type === 'err' ? 'fa-circle-exclamation' : type === 'ok' ? 'fa-circle-check' : 'fa-circle-info'}"></i>${esc(msg)}`;
+    $('#toasts').appendChild(t);
+    setTimeout(() => { t.style.transition = 'opacity .3s'; t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 2600);
+  }
+
+  // ---------------- Boot ----------------
+  function defaultFocus() {
+    // the person with the richest close family (2 generations each way)
+    let best = null, bestScore = -1;
+    M.forEach((m, u) => {
+      const kids = KIDS.get(u) || [];
+      const grand = kids.flatMap(c => KIDS.get(c) || []);
+      const ps = [m.father, m.mother].filter(Boolean);
+      const gps = ps.flatMap(p => [M.get(p).father, M.get(p).mother].filter(Boolean));
+      const score = kids.length + grand.length + ps.length * 2 + gps.length * 2 + (m.birthdate ? 3 : 0);
+      if (score > bestScore) { bestScore = score; best = u; }
+    });
+    return best;
+  }
+
+  (async function boot() {
+    try {
+      await loadData();
+    } catch (e) {
+      $('#loading').innerHTML = '<span><i class="fas fa-triangle-exclamation"></i>&nbsp; לא ניתן לטעון את הנתונים</span>';
+      return;
+    }
+    $('#loading').remove();
+    const fromHash = (location.hash.match(/p=([\w-]+)/) || [])[1];
+    const start = [fromHash, store.get('focus', null)].find(u => u && M.has(u)) || defaultFocus();
+    if (!start) { $('#stage').insertAdjacentHTML('beforeend', '<div class="loading">אין עדיין אנשים — הוסיפו את הראשון</div>'); return; }
+    history.replaceState(null, '', '#p=' + start);
+    S.focus = start;
+    S.recent = [start, ...S.recent.filter(x => x !== start)].slice(0, 8);
+    renderTree(false);
+    frame(false);
+    renderPanel();
+    renderTrail();
+  })();
+</script>
+</body>
+</html>
